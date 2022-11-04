@@ -113,11 +113,7 @@ public class Player extends Entity implements Battleable {
             return;
         }
         inEffective = queue.remove();
-        if (inEffective instanceof InvincibilityPotion) {
-            state.transitionInvincible();
-        } else {
-            state.transitionInvisible();
-        }
+        inEffective.transitionState(this);
         nextTrigger = currentTick + inEffective.getDuration();
     }
 
