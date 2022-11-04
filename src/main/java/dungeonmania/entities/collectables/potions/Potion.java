@@ -58,4 +58,6 @@ public abstract class Potion extends Entity implements InventoryItem, BattleItem
     public int getDurability() {
         return 1;
     }
+
+    public abstract void transitionState(Player player);
 }

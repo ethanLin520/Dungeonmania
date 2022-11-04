@@ -1,7 +1,10 @@
 package dungeonmania.entities.collectables.potions;
 
 import dungeonmania.battles.BattleStatistics;
+import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
+import dungeonmania.entities.playerState.InvisibleState;
+
 
 public class InvisibilityPotion extends Potion {
     public static final int DEFAULT_DURATION = 8;
@@ -22,4 +25,7 @@ public class InvisibilityPotion extends Potion {
                 false));
     }
 
+    public void transitionState(Player player) {
+        player.changeState(new InvisibleState());
+    }
 }

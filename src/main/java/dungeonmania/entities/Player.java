@@ -14,6 +14,8 @@ import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.entities.playerState.BaseState;
+import dungeonmania.entities.playerState.InvincibleState;
+import dungeonmania.entities.playerState.InvisibleState;
 import dungeonmania.entities.playerState.PlayerState;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
@@ -24,7 +26,7 @@ public class Player extends Entity implements Battleable {
     public static final double DEFAULT_HEALTH = 5.0;
     private BattleStatistics battleStatistics;
     private Inventory inventory;
-    private Queue<Potion> queue = new LinkedList<>();
+    private Queue<Potion> potionQueue = new LinkedList<>();
     private Potion inEffective = null;
     private int nextTrigger = 0;
 
@@ -39,7 +41,7 @@ public class Player extends Entity implements Battleable {
                 BattleStatistics.DEFAULT_DAMAGE_MAGNIFIER,
                 BattleStatistics.DEFAULT_PLAYER_DAMAGE_REDUCER);
         inventory = new Inventory();
-        state = new BaseState(this);
+        state = new BaseState();
     }
 
     public boolean hasWeapon() {
@@ -107,17 +109,13 @@ public class Player extends Entity implements Battleable {
     }
 
     public void triggerNext(int currentTick) {
-        if (queue.isEmpty()) {
+        if (potionQueue.isEmpty()) {
             inEffective = null;
-            state.transitionBase();
+            changeState(new BaseState());
             return;
         }
-        inEffective = queue.remove();
-        if (inEffective instanceof InvincibilityPotion) {
-            state.transitionInvincible();
-        } else {
-            state.transitionInvisible();
-        }
+        inEffective = potionQueue.remove();
+        inEffective.transitionState(this);
         nextTrigger = currentTick + inEffective.getDuration();
     }
 
@@ -127,7 +125,7 @@ public class Player extends Entity implements Battleable {
 
     public void use(Potion potion, int tick) {
         inventory.remove(potion);
-        queue.add(potion);
+        potionQueue.add(potion);
         if (inEffective == null) {
             triggerNext(tick);
         }

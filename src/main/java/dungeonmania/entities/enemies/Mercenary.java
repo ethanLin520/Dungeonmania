@@ -1,9 +1,5 @@
 package dungeonmania.entities.enemies;
 
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-
 import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
@@ -65,27 +61,15 @@ public class Mercenary extends Enemy implements Interactable {
 
     @Override
     public void move(Game game) {
-        Position nextPos;
-        GameMap map = game.getMap();
         if (allied) {
             // Move random
-            Random randGen = new Random();
-            List<Position> pos = getPosition().getCardinallyAdjacentPositions();
-            pos = pos
-                .stream()
-                .filter(p -> map.canMoveTo(this, p)).collect(Collectors.toList());
-            if (pos.size() == 0) {
-                nextPos = getPosition();
-                map.moveTo(this, nextPos);
-            } else {
-                nextPos = pos.get(randGen.nextInt(pos.size()));
-                map.moveTo(this, nextPos);
-            }
+            randomMove(game);
         } else {
             // Follow hostile
-            nextPos = map.dijkstraPathFind(getPosition(), map.getPlayer().getPosition(), this);
+            GameMap map = game.getMap();
+            Position nextPos = map.dijkstraPathFind(getPosition(), map.getPlayer().getPosition(), this);
+            map.moveTo(this, nextPos);
         }
-        map.moveTo(this, nextPos);
     }
 
     @Override
