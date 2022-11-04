@@ -114,7 +114,7 @@ public class Player extends Entity implements Battleable {
             changeState(new BaseState());
             return;
         }
-        // inEffective = queue.remove();
+        inEffective = potionQueue.remove();
         inEffective.transitionState(this);
         nextTrigger = currentTick + inEffective.getDuration();
     }
