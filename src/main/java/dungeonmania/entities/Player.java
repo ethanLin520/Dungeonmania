@@ -24,7 +24,7 @@ public class Player extends Entity implements Battleable {
     public static final double DEFAULT_HEALTH = 5.0;
     private BattleStatistics battleStatistics;
     private Inventory inventory;
-    private Queue<Potion> queue = new LinkedList<>();
+    private Queue<Potion> potionQueue = new LinkedList<>();
     private Potion inEffective = null;
     private int nextTrigger = 0;
 
@@ -107,12 +107,12 @@ public class Player extends Entity implements Battleable {
     }
 
     public void triggerNext(int currentTick) {
-        if (queue.isEmpty()) {
+        if (potionQueue.isEmpty()) {
             inEffective = null;
             state.transitionBase();
             return;
         }
-        inEffective = queue.remove();
+        inEffective = potionQueue.remove();
         if (inEffective instanceof InvincibilityPotion) {
             state.transitionInvincible();
         } else {
@@ -127,7 +127,7 @@ public class Player extends Entity implements Battleable {
 
     public void use(Potion potion, int tick) {
         inventory.remove(potion);
-        queue.add(potion);
+        potionQueue.add(potion);
         if (inEffective == null) {
             triggerNext(tick);
         }
