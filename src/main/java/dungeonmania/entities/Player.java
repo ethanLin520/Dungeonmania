@@ -14,6 +14,8 @@ import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.entities.playerState.BaseState;
+import dungeonmania.entities.playerState.InvincibleState;
+import dungeonmania.entities.playerState.InvisibleState;
 import dungeonmania.entities.playerState.PlayerState;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
@@ -39,7 +41,7 @@ public class Player extends Entity implements Battleable {
                 BattleStatistics.DEFAULT_DAMAGE_MAGNIFIER,
                 BattleStatistics.DEFAULT_PLAYER_DAMAGE_REDUCER);
         inventory = new Inventory();
-        state = new BaseState(this);
+        state = new BaseState();
     }
 
     public boolean hasWeapon() {
@@ -109,14 +111,14 @@ public class Player extends Entity implements Battleable {
     public void triggerNext(int currentTick) {
         if (potionQueue.isEmpty()) {
             inEffective = null;
-            state.transitionBase();
+            changeState(new BaseState());
             return;
         }
         inEffective = potionQueue.remove();
         if (inEffective instanceof InvincibilityPotion) {
-            state.transitionInvincible();
+            changeState(new InvincibleState());
         } else {
-            state.transitionInvisible();
+            changeState(new InvisibleState());
         }
         nextTrigger = currentTick + inEffective.getDuration();
     }
