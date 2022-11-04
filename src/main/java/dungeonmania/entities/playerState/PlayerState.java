@@ -1,6 +1,7 @@
 package dungeonmania.entities.playerState;
 
+import dungeonmania.battles.BattleStatistics;
+
 public interface PlayerState {
-    public boolean isInvincible();
-    public boolean isInvisible();
+    public BattleStatistics applyBuff();
 }
