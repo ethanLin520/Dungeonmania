@@ -61,6 +61,10 @@ public abstract class Enemy extends Entity implements Battleable {
 
     public abstract void move(Game game);
 
+    /**
+     * Make a random move for the Enemy.
+     * @param game
+     */
     protected void randomMove(Game game) {
         Position nextPos;
         GameMap map = game.getMap();
