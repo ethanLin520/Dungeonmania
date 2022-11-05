@@ -5,5 +5,7 @@ import dungeonmania.map.GameMap;
 public class DefaultDestroy implements DestroyStrategy {
 
     @Override
-    public void apply(GameMap gameMap) {}
+    public void apply(GameMap gameMap) {
+        return;
+    }
 }
