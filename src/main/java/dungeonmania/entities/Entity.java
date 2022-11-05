@@ -88,15 +88,15 @@ public abstract class Entity {
         return this.facing;
     }
 
-    protected void setOverlapStrategy(OverlapStrategy overlapStrategy) {
+    protected final void setOverlapStrategy(OverlapStrategy overlapStrategy) {
         this.overlapStrategy = overlapStrategy;
     }
 
-    protected void setMovedAwayStrategy(MovedAwayStrategy movedAwayStrategy) {
+    protected final void setMovedAwayStrategy(MovedAwayStrategy movedAwayStrategy) {
         this.movedAwayStrategy = movedAwayStrategy;
     }
 
-    protected void setDestroyStrategy(DestroyStrategy destroyStrategy) {
+    protected final void setDestroyStrategy(DestroyStrategy destroyStrategy) {
         this.destroyStrategy = destroyStrategy;
     }
 }
