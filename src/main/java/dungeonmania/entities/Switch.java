@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dungeonmania.entities.collectables.Bomb;
+import dungeonmania.entities.strategy.movedaway.SwitchMovedAway;
 import dungeonmania.entities.strategy.overlap.SwitchOverlap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
@@ -15,6 +16,7 @@ public class Switch extends Entity {
     public Switch(Position position) {
         super(position.asLayer(Entity.ITEM_LAYER));
         setOverlapStrategy(new SwitchOverlap(this));
+        setMovedAwayStrategy(new SwitchMovedAway(this));
     }
 
     public void subscribe(Bomb b) {
@@ -37,13 +39,6 @@ public class Switch extends Entity {
         return true;
     }
 
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        if (entity instanceof Boulder) {
-            activated = false;
-        }
-    }
-
     public boolean isActivated() {
         return activated;
     }
@@ -60,8 +55,7 @@ public class Switch extends Entity {
         return true;
     }
 
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
+    public static void deactivate(Switch s) {
+        s.activated = false;
     }
 }

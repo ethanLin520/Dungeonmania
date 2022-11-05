@@ -10,9 +10,10 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.Switch;
 import dungeonmania.entities.inventory.InventoryItem;
+import dungeonmania.entities.strategy.overlap.BombOverlap;
 import dungeonmania.map.GameMap;
 
-public class Bomb extends Entity implements InventoryItem {
+public class Bomb extends Collectable implements InventoryItem {
     public enum State {
         SPAWNED,
         INVENTORY,
@@ -29,6 +30,7 @@ public class Bomb extends Entity implements InventoryItem {
         super(position);
         state = State.SPAWNED;
         this.radius = radius;
+        setOverlapStrategy(new BombOverlap(this));
     }
 
     public void subscribe(Switch s) {
@@ -37,32 +39,6 @@ public class Bomb extends Entity implements InventoryItem {
 
     public void notify(GameMap map) {
         explode(map);
-    }
-
-    @Override
-    public boolean canMoveOnto(GameMap map, Entity entity) {
-        return true;
-    }
-
-    @Override
-    public void onOverlap(GameMap map, Entity entity) {
-        if (state != State.SPAWNED) return;
-        if (entity instanceof Player) {
-            if (!((Player) entity).pickUp(this)) return;
-            subs.stream().forEach(s -> s.unsubscribe(this));
-            map.destroyEntity(this);
-        }
-        this.state = State.INVENTORY;
-    }
-
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
-    }
-
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
     }
 
     public void onPutDown(GameMap map, Position p) {
@@ -104,5 +80,13 @@ public class Bomb extends Entity implements InventoryItem {
 
     public State getState() {
         return state;
+    }
+
+    public static void setState(Bomb b, State s) {
+        b.state = s;
+    }
+
+    public static void unlinkObserver(Bomb b) {
+        b.subs.stream().forEach(s -> s.unsubscribe(b));
     }
 }

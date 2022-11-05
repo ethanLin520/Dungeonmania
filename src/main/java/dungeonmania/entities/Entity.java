@@ -40,13 +40,17 @@ public abstract class Entity {
         return false;
     }
 
-    public void onOverlap(GameMap map, Entity entity) {
+    public final void onOverlap(GameMap map, Entity entity) {
         overlapStrategy.apply(map, entity);
     }
 
-    public abstract void onMovedAway(GameMap map, Entity entity);
+    public final void onMovedAway(GameMap map, Entity entity) {
+        movedAwayStrategy.apply(map, entity);
+    }
 
-    public abstract void onDestroy(GameMap gameMap);
+    public final void onDestroy(GameMap gameMap) {
+        destroyStrategy.apply(gameMap);
+    }
 
     public Position getPosition() {
         return position;
