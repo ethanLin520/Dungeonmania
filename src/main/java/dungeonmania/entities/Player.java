@@ -8,12 +8,11 @@ import dungeonmania.battles.BattleStatistics;
 import dungeonmania.battles.Battleable;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.potions.Potion;
-import dungeonmania.entities.enemies.Enemy;
-import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.entities.playerState.BaseState;
 import dungeonmania.entities.playerState.PlayerState;
+import dungeonmania.entities.strategy.overlap.PlayerOverlap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -39,6 +38,7 @@ public class Player extends Entity implements Battleable {
                 BattleStatistics.DEFAULT_PLAYER_DAMAGE_REDUCER);
         inventory = new Inventory();
         state = new BaseState();
+        setOverlapStrategy(new PlayerOverlap(this));
     }
 
     public boolean hasWeapon() {
@@ -62,16 +62,6 @@ public class Player extends Entity implements Battleable {
     public void move(GameMap map, Direction direction) {
         this.setFacing(direction);
         map.moveTo(this, Position.translateBy(this.getPosition(), direction));
-    }
-
-    @Override
-    public void onOverlap(GameMap map, Entity entity) {
-        if (entity instanceof Enemy) {
-            if (entity instanceof Mercenary) {
-                if (((Mercenary) entity).isAllied()) return;
-            }
-            map.getGame().battle(this, (Enemy) entity);
-        }
     }
 
     @Override
@@ -152,12 +142,7 @@ public class Player extends Entity implements Battleable {
     }
 
     @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
-    }
-
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
+    public double getHealth() {
+        return getBattleStatistics().getHealth();
     }
 }

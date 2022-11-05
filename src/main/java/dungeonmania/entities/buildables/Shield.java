@@ -1,6 +1,5 @@
 package dungeonmania.entities.buildables;
 
-
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 
@@ -36,6 +35,4 @@ public class Shield extends Buildable {
     public int getDurability() {
         return durability;
     }
-
-
 }

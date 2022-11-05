@@ -9,6 +9,8 @@ import dungeonmania.battles.BattleStatistics;
 import dungeonmania.battles.Battleable;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.strategy.destroy.EnemyDestroy;
+import dungeonmania.entities.strategy.overlap.EnemyOverlap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
@@ -23,6 +25,8 @@ public abstract class Enemy extends Entity implements Battleable {
                 0,
                 BattleStatistics.DEFAULT_DAMAGE_MAGNIFIER,
                 BattleStatistics.DEFAULT_ENEMY_DAMAGE_REDUCER);
+        setOverlapStrategy(new EnemyOverlap(this));
+        setDestroyStrategy(new EnemyDestroy(this));
     }
 
     @Override
@@ -36,26 +40,16 @@ public abstract class Enemy extends Entity implements Battleable {
     }
 
     @Override
-    public void onOverlap(GameMap map, Entity entity) {
-        if (entity instanceof Player) {
-            Player player = (Player) entity;
-            map.getGame().battle(player, this);
-        }
-    }
-
-    @Override
-    public void onDestroy(GameMap map) {
-        Game g = map.getGame();
-        g.unsubscribe(getId());
-    }
-
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
+    public double getHealth() {
+        return getBattleStatistics().getHealth();
     }
 
     public abstract void move(Game game);
 
+    /**
+     * Make a random move for the Enemy.
+     * @param game
+     */
     protected void randomMove(Game game) {
         Position nextPos;
         GameMap map = game.getMap();
