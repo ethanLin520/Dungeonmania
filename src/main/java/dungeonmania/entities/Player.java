@@ -160,4 +160,9 @@ public class Player extends Entity implements Battleable {
     public void onDestroy(GameMap gameMap) {
         return;
     }
+
+    @Override
+    public double getHealth() {
+        return getBattleStatistics().getHealth();
+    }
 }
