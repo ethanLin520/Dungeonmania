@@ -145,4 +145,8 @@ public class Player extends Entity implements Battleable {
     public double getHealth() {
         return getBattleStatistics().getHealth();
     }
+
+    public void setBattleStatistics(BattleStatistics newStat) {
+        this.battleStatistics = newStat;
+    }
 }
