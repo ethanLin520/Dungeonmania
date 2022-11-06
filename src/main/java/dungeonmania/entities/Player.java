@@ -133,6 +133,10 @@ public class Player extends Entity implements Battleable {
         return battleStatistics;
     }
 
+    public void setBattleStatistics(BattleStatistics newStat) {
+        this.battleStatistics = newStat;
+    }
+
     public <T extends InventoryItem> int countEntityOfType(Class<T> itemType) {
         return inventory.count(itemType);
     }
@@ -144,9 +148,5 @@ public class Player extends Entity implements Battleable {
     @Override
     public double getHealth() {
         return getBattleStatistics().getHealth();
-    }
-
-    public void setBattleStatistics(BattleStatistics newStat) {
-        this.battleStatistics = newStat;
     }
 }

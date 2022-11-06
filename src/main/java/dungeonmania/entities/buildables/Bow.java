@@ -2,6 +2,8 @@ package dungeonmania.entities.buildables;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
+import dungeonmania.entities.collectables.*;
+import dungeonmania.entities.inventory.Inventory;
 
 public class Bow extends Buildable  {
 
@@ -33,5 +35,17 @@ public class Bow extends Buildable  {
     @Override
     public int getDurability() {
         return durability;
+    }
+
+
+    public boolean formula(Inventory inventory) {
+        int wood = inventory.count(Wood.class);
+        int arrows = inventory.count(Arrow.class);
+        
+        if (wood >= 1 && arrows >= 3) {
+            return true;
+        }
+        
+        return false;
     }
 }

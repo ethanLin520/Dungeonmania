@@ -171,4 +171,25 @@ public class MercenaryTest {
     private Position getMercPos(DungeonResponse res) {
         return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
     }
+
+    @Test
+    @Tag("12-8")
+    @DisplayName("Testing an allied mercenary follows the player")
+    public void allyFollow() {
+        DungeonManiaController dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_mercenaryTest_allyFollow", "c_mercenaryTest_allyBattle");
+
+        String mercId = TestUtils.getEntitiesStream(res, "mercenary").findFirst().get().getId();
+
+        // pick up treasure
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(1, TestUtils.getInventory(res, "treasure").size());
+
+        // achieve bribe
+        res = assertDoesNotThrow(() -> dmc.interact(mercId));
+        assertEquals(0, TestUtils.getInventory(res, "treasure").size());
+
+        Position currPos = getMercPos(res);
+        Position nextPox = new Position(0, 0);
+    }
 }

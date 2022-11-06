@@ -2,6 +2,8 @@ package dungeonmania.entities.buildables;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
+import dungeonmania.entities.collectables.*;
+import dungeonmania.entities.inventory.Inventory;
 
 public class Shield extends Buildable {
     private int durability;
@@ -34,5 +36,17 @@ public class Shield extends Buildable {
     @Override
     public int getDurability() {
         return durability;
+    }
+
+    public boolean formula(Inventory inventory) {
+        int wood = inventory.count(Wood.class);
+        int keys = inventory.count(Key.class);
+        int treasure = inventory.count(Treasure.class);
+
+        if (wood >= 2 && (treasure >= 1 || keys >= 1)) {
+            return true;
+        }
+        
+        return false;
     }
 }
