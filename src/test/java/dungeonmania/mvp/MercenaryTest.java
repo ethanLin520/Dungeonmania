@@ -1,6 +1,7 @@
 package dungeonmania.mvp;
 
 import dungeonmania.DungeonManiaController;
+import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
@@ -189,7 +190,28 @@ public class MercenaryTest {
         res = assertDoesNotThrow(() -> dmc.interact(mercId));
         assertEquals(0, TestUtils.getInventory(res, "treasure").size());
 
-        Position currPos = getMercPos(res);
-        Position nextPox = new Position(0, 0);
+        // The Merc should be moving towards the player
+
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        // Now the Move Strategy of the Merc should be AlliedMove
+        Position prevPos = TestUtils.getPlayerPos(res);
+        res = dmc.tick(Direction.RIGHT);
+        Position mercPox = getMercPos(res);
+        assertTrue(prevPos.equals(mercPox));
+
+        prevPos = TestUtils.getPlayerPos(res);
+        res = dmc.tick(Direction.RIGHT);
+        mercPox = getMercPos(res);
+        assertTrue(prevPos.equals(mercPox));
+
+        prevPos = TestUtils.getPlayerPos(res);
+        res = dmc.tick(Direction.RIGHT);
+        mercPox = getMercPos(res);
+        assertTrue(prevPos.equals(mercPox));
     }
 }
