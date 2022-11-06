@@ -1,10 +1,5 @@
 package dungeonmania.entities.enemies;
 
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-
-import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.battles.Battleable;
 import dungeonmania.entities.Entity;
@@ -46,28 +41,5 @@ public abstract class Enemy extends Entity implements Battleable {
 
     public void setBattleStatistics(BattleStatistics newStat) {
         this.battleStatistics = newStat;
-    }
-
-    public abstract void move(Game game);
-
-    /**
-     * Make a random move for the Enemy.
-     * @param game
-     */
-    protected void randomMove(Game game) {
-        Position nextPos;
-        GameMap map = game.getMap();
-        Random randGen = new Random();
-        List<Position> pos = getPosition().getCardinallyAdjacentPositions();
-        pos = pos
-            .stream()
-            .filter(p -> map.canMoveTo(this, p)).collect(Collectors.toList());
-        if (pos.size() == 0) {
-            nextPos = getPosition();
-            map.moveTo(this, nextPos);
-        } else {
-            nextPos = pos.get(randGen.nextInt(pos.size()));
-            map.moveTo(this, nextPos);
-        }
     }
 }

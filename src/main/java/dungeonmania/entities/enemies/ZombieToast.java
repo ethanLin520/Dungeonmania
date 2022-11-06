@@ -1,6 +1,6 @@
 package dungeonmania.entities.enemies;
 
-import dungeonmania.Game;
+import dungeonmania.entities.strategy.move.RandomMove;
 import dungeonmania.util.Position;
 
 public class ZombieToast extends Enemy {
@@ -9,10 +9,6 @@ public class ZombieToast extends Enemy {
 
     public ZombieToast(Position position, double health, double attack) {
         super(position, health, attack);
-    }
-
-    @Override
-    public void move(Game game) {
-        randomMove(game);
+        setMoveStrategy(new RandomMove(this));
     }
 }

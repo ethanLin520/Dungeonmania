@@ -1,7 +1,10 @@
 package dungeonmania.entities;
 
+import dungeonmania.Game;
 import dungeonmania.entities.strategy.destroy.DefaultDestroy;
 import dungeonmania.entities.strategy.destroy.DestroyStrategy;
+import dungeonmania.entities.strategy.move.DefaultMove;
+import dungeonmania.entities.strategy.move.MoveStrategy;
 import dungeonmania.entities.strategy.movedaway.DefaultMovedAway;
 import dungeonmania.entities.strategy.movedaway.MovedAwayStrategy;
 import dungeonmania.entities.strategy.overlap.DefaultOverlap;
@@ -27,6 +30,7 @@ public abstract class Entity {
     private OverlapStrategy overlapStrategy = new DefaultOverlap();
     private MovedAwayStrategy movedAwayStrategy = new DefaultMovedAway();
     private DestroyStrategy destroyStrategy = new DefaultDestroy();
+    private MoveStrategy moveStrategy = new DefaultMove();
 
     public Entity(Position position) {
         this.position = position;
@@ -88,6 +92,10 @@ public abstract class Entity {
         return this.facing;
     }
 
+    public void move(Game game) {
+        moveStrategy.apply(game);
+    }
+
     protected final void setOverlapStrategy(OverlapStrategy overlapStrategy) {
         this.overlapStrategy = overlapStrategy;
     }
@@ -98,5 +106,13 @@ public abstract class Entity {
 
     protected final void setDestroyStrategy(DestroyStrategy destroyStrategy) {
         this.destroyStrategy = destroyStrategy;
+    }
+
+    protected final MoveStrategy getMoveStrategy() {
+        return this.moveStrategy;
+    }
+
+    protected final void setMoveStrategy(MoveStrategy moveStrategy) {
+        this.moveStrategy = moveStrategy;
     }
 }
