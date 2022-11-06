@@ -1,10 +1,10 @@
 package dungeonmania.entities.enemies;
 
 import dungeonmania.Game;
-import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Treasure;
+import dungeonmania.entities.strategy.overlap.DefaultOverlap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
@@ -26,12 +26,6 @@ public class Mercenary extends Enemy implements Interactable {
 
     public boolean isAllied() {
         return allied;
-    }
-
-    @Override
-    public void onOverlap(GameMap map, Entity entity) {
-        if (allied) return;
-        super.onOverlap(map, entity);
     }
 
     /**
@@ -57,6 +51,7 @@ public class Mercenary extends Enemy implements Interactable {
     public void interact(Player player, Game game) {
         allied = true;
         bribe(player);
+        setOverlapStrategy(new DefaultOverlap());
     }
 
     @Override

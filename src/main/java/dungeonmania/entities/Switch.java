@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dungeonmania.entities.collectables.Bomb;
+import dungeonmania.entities.strategy.movedaway.SwitchMovedAway;
+import dungeonmania.entities.strategy.overlap.SwitchOverlap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
@@ -13,6 +15,8 @@ public class Switch extends Entity {
 
     public Switch(Position position) {
         super(position.asLayer(Entity.ITEM_LAYER));
+        setOverlapStrategy(new SwitchOverlap(this));
+        setMovedAwayStrategy(new SwitchMovedAway(this));
     }
 
     public void subscribe(Bomb b) {
@@ -35,27 +39,23 @@ public class Switch extends Entity {
         return true;
     }
 
-    @Override
-    public void onOverlap(GameMap map, Entity entity) {
-        if (entity instanceof Boulder) {
-            activated = true;
-            bombs.stream().forEach(b -> b.notify(map));
-        }
-    }
-
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        if (entity instanceof Boulder) {
-            activated = false;
-        }
-    }
-
     public boolean isActivated() {
         return activated;
     }
 
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
+    /**
+     * Activate the given Switch s and notify all bombs subscribing.
+     * @param s
+     * @return true if successfully activated, false if already activated.
+     */
+    public static boolean activate(Switch s, GameMap map) {
+        if (s.activated) return false;
+        s.activated = true;
+        s.bombs.stream().forEach(b -> b.notify(map));
+        return true;
+    }
+
+    public static void deactivate(Switch s) {
+        s.activated = false;
     }
 }

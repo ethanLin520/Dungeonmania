@@ -1,5 +1,11 @@
 package dungeonmania.entities;
 
+import dungeonmania.entities.strategy.destroy.DefaultDestroy;
+import dungeonmania.entities.strategy.destroy.DestroyStrategy;
+import dungeonmania.entities.strategy.movedaway.DefaultMovedAway;
+import dungeonmania.entities.strategy.movedaway.MovedAwayStrategy;
+import dungeonmania.entities.strategy.overlap.DefaultOverlap;
+import dungeonmania.entities.strategy.overlap.OverlapStrategy;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -18,6 +24,10 @@ public abstract class Entity {
     private Direction facing;
     private String entityId;
 
+    private OverlapStrategy overlapStrategy = new DefaultOverlap();
+    private MovedAwayStrategy movedAwayStrategy = new DefaultMovedAway();
+    private DestroyStrategy destroyStrategy = new DefaultDestroy();
+
     public Entity(Position position) {
         this.position = position;
         this.previousPosition = position;
@@ -30,28 +40,17 @@ public abstract class Entity {
         return false;
     }
 
-    // use setPosition
-    @Deprecated(forRemoval = true)
-    public void translate(Direction direction) {
-        previousPosition = this.position;
-        this.position = Position.translateBy(this.position, direction);
-        if (!previousPosition.equals(this.position)) {
-            previousDistinctPosition = previousPosition;
-        }
+    public final void onOverlap(GameMap map, Entity entity) {
+        overlapStrategy.apply(map, entity);
     }
 
-    // use setPosition
-    @Deprecated(forRemoval = true)
-    public void translate(Position offset) {
-        this.position = Position.translateBy(this.position, offset);
+    public final void onMovedAway(GameMap map, Entity entity) {
+        movedAwayStrategy.apply(map, entity);
     }
 
-
-    public abstract void onOverlap(GameMap map, Entity entity);
-
-    public abstract void onMovedAway(GameMap map, Entity entity);
-
-    public abstract void onDestroy(GameMap gameMap);
+    public final void onDestroy(GameMap gameMap) {
+        destroyStrategy.apply(gameMap);
+    }
 
     public Position getPosition() {
         return position;
@@ -77,11 +76,27 @@ public abstract class Entity {
         }
     }
 
+    public void setPosition(Direction direction) {
+        setPosition(Position.translateBy(getPosition(), direction));
+    }
+
     public void setFacing(Direction facing) {
         this.facing = facing;
     }
 
     public Direction getFacing() {
         return this.facing;
+    }
+
+    protected void setOverlapStrategy(OverlapStrategy overlapStrategy) {
+        this.overlapStrategy = overlapStrategy;
+    }
+
+    protected void setMovedAwayStrategy(MovedAwayStrategy movedAwayStrategy) {
+        this.movedAwayStrategy = movedAwayStrategy;
+    }
+
+    protected void setDestroyStrategy(DestroyStrategy destroyStrategy) {
+        this.destroyStrategy = destroyStrategy;
     }
 }

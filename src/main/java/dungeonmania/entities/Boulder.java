@@ -1,6 +1,7 @@
 package dungeonmania.entities;
 
 import dungeonmania.entities.enemies.Spider;
+import dungeonmania.entities.strategy.overlap.BoulderOverlap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
@@ -9,6 +10,7 @@ public class Boulder extends Entity {
 
     public Boulder(Position position) {
         super(position.asLayer(Entity.CHARACTER_LAYER));
+        setOverlapStrategy(new BoulderOverlap(this));
     }
 
     @Override
@@ -18,28 +20,11 @@ public class Boulder extends Entity {
         return false;
     }
 
-    @Override
-    public void onOverlap(GameMap map, Entity entity) {
-        if (entity instanceof Player) {
-            map.moveTo(this, entity.getFacing());
-        }
-    }
-
     private boolean canPush(GameMap map, Direction direction) {
         Position newPosition = Position.translateBy(this.getPosition(), direction);
         for (Entity e : map.getEntities(newPosition)) {
             if (!e.canMoveOnto(map, this)) return false;
         }
         return true;
-    }
-
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
-    }
-
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
     }
 }

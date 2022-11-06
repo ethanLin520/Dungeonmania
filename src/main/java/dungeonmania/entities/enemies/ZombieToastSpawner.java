@@ -4,7 +4,7 @@ import dungeonmania.Game;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
-import dungeonmania.map.GameMap;
+import dungeonmania.entities.strategy.destroy.EnemyDestroy;
 import dungeonmania.util.Position;
 
 public class ZombieToastSpawner extends Entity implements Interactable {
@@ -12,16 +12,11 @@ public class ZombieToastSpawner extends Entity implements Interactable {
 
     public ZombieToastSpawner(Position position, int spawnInterval) {
         super(position);
+        setDestroyStrategy(new EnemyDestroy(this));
     }
 
     public void spawn(Game game) {
         game.getEntityFactory().spawnZombie(game, this);
-    }
-
-    @Override
-    public void onDestroy(GameMap map) {
-        Game g = map.getGame();
-        g.unsubscribe(getId());
     }
 
     @Override
@@ -32,15 +27,5 @@ public class ZombieToastSpawner extends Entity implements Interactable {
     @Override
     public boolean isInteractable(Player player) {
         return Position.isAdjacent(player.getPosition(), getPosition()) && player.hasWeapon();
-    }
-
-    @Override
-    public void onOverlap(GameMap map, Entity entity) {
-        return;
-    }
-
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
     }
 }

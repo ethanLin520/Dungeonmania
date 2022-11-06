@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import dungeonmania.entities.enemies.Mercenary;
-import dungeonmania.entities.enemies.ZombieToast;
+import dungeonmania.entities.strategy.overlap.PortalOverlap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
@@ -15,6 +15,7 @@ public class Portal extends Entity {
     public Portal(Position position, ColorCodedType color) {
         super(position);
         this.color = color;
+        setOverlapStrategy(new PortalOverlap(this));
     }
 
     @Override
@@ -31,14 +32,6 @@ public class Portal extends Entity {
         return neighbours.stream().allMatch(n -> map.canMoveTo(entity, n));
     }
 
-    @Override
-    public void onOverlap(GameMap map, Entity entity) {
-        if (pair == null)
-            return;
-        if (entity instanceof Player || entity instanceof Mercenary || entity instanceof ZombieToast)
-            doTeleport(map, entity);
-    }
-
     private void doTeleport(GameMap map, Entity entity) {
         Position destination = pair.getPosition()
                 .getCardinallyAdjacentPositions()
@@ -49,6 +42,10 @@ public class Portal extends Entity {
         if (destination != null) {
             map.moveTo(entity, destination);
         }
+    }
+
+    public static void doTeleport(Portal portal, GameMap map, Entity entity) {
+        portal.doTeleport(map, entity);
     }
 
     public String getColor() {
@@ -75,13 +72,7 @@ public class Portal extends Entity {
         }
     }
 
-    @Override
-    public void onMovedAway(GameMap map, Entity entity) {
-        return;
-    }
-
-    @Override
-    public void onDestroy(GameMap gameMap) {
-        return;
+    public Portal getPair() {
+        return pair;
     }
 }
