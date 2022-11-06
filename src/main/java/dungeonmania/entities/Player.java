@@ -26,6 +26,7 @@ public class Player extends Entity implements Battleable {
     private Queue<Potion> potionQueue = new LinkedList<>();
     private Potion inEffective = null;
     private int nextTrigger = 0;
+    private int kills = 0;
 
     private PlayerState state;
 
@@ -97,7 +98,7 @@ public class Player extends Entity implements Battleable {
         bomb.onPutDown(map, getPosition());
     }
 
-    public void triggerNext(int currentTick) {
+    private void triggerNextPotion(int currentTick) {
         if (potionQueue.isEmpty()) {
             inEffective = null;
             changeState(new BaseState());
@@ -116,13 +117,13 @@ public class Player extends Entity implements Battleable {
         inventory.remove(potion);
         potionQueue.add(potion);
         if (inEffective == null) {
-            triggerNext(tick);
+            triggerNextPotion(tick);
         }
     }
 
     public void onTick(int tick) {
         if (inEffective == null || tick == nextTrigger) {
-            triggerNext(tick);
+            triggerNextPotion(tick);
         }
     }
 
@@ -150,5 +151,13 @@ public class Player extends Entity implements Battleable {
     @Override
     public double getHealth() {
         return getBattleStatistics().getHealth();
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public void addOneKill() {
+        this.kills++;
     }
 }

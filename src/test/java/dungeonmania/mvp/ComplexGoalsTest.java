@@ -165,4 +165,71 @@ public class ComplexGoalsTest {
         assertTrue(TestUtils.getGoals(res).contains(":exit"));
         assertTrue(TestUtils.getGoals(res).contains(":boulders"));
     }
+
+    @Test
+    @Tag("14-7")
+    @DisplayName("Testing that the exit goal must be achieved last and EXIT and TREASURE")
+    public void exitAndEnemies() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_complexGoalsTest_enemies", "c_complexGoalsTest_enemies");
+
+        // test go directly to exit doesn't achieve goal
+        res = dmc.tick(Direction.UP);
+        assertTrue(TestUtils.getGoals(res).contains(":enemies"));
+
+        // kill zombies
+        res = dmc.tick(Direction.DOWN);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        // assert goal not met
+        assertTrue(!TestUtils.getGoals(res).contains(":enemies"));
+        assertTrue(TestUtils.getGoals(res).contains(":exit"));
+
+        // go to exit
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.UP);
+
+        // assert goal met
+        assertEquals("", TestUtils.getGoals(res));
+    }
+
+    @Test
+    @Tag("14-8")
+    @DisplayName("Testing that the exit goal must be achieved last and EXIT and TREASURE")
+    public void exitAndEnemiesAndSpawner() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_complexGoalsTest_spawner", "c_complexGoalsTest_spawner");
+
+        // kill zombies
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+
+        // assert goal not met
+        assertTrue(TestUtils.getGoals(res).contains(":enemies"));
+        assertTrue(TestUtils.getGoals(res).contains(":exit"));
+
+        // destroy spawner
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.LEFT);
+        String spawnerId = TestUtils.getEntities(res, "zombie_toast_spawner").get(0).getId();
+        res = assertDoesNotThrow(() -> dmc.interact(spawnerId));
+
+        // assert goal not met
+        assertTrue(!TestUtils.getGoals(res).contains(":enemies"));
+        assertTrue(TestUtils.getGoals(res).contains(":exit"));
+
+        // go to exit
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.UP);
+
+        // assert goal met
+        assertEquals("", TestUtils.getGoals(res));
+    }
 }
