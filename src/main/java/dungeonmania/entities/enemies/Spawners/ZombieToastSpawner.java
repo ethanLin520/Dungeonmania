@@ -20,6 +20,7 @@ public class ZombieToastSpawner extends Spawner implements Interactable {
     @Override
     public void interact(Player player, Game game) {
         player.getInventory().getWeapon().use(game);
+        game.getMap().removeNode(this);
     }
 
     @Override
