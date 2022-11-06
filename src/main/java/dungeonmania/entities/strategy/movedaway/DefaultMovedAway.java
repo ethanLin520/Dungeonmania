@@ -6,5 +6,7 @@ import dungeonmania.map.GameMap;
 public class DefaultMovedAway implements MovedAwayStrategy {
 
     @Override
-    public void apply(GameMap map, Entity entity) {}
+    public void apply(GameMap map, Entity entity) {
+        return;
+    }
 }
