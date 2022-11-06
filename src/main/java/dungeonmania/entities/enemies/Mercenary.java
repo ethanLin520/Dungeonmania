@@ -4,7 +4,7 @@ import dungeonmania.Game;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Treasure;
-import dungeonmania.entities.strategy.move.AlliedMove;
+import dungeonmania.entities.strategy.move.DijkstraMove;
 import dungeonmania.entities.strategy.move.RandomMove;
 import dungeonmania.entities.strategy.overlap.DefaultOverlap;
 import dungeonmania.util.Position;
@@ -23,7 +23,7 @@ public class Mercenary extends Enemy implements Interactable {
         super(position, health, attack);
         this.bribeAmount = bribeAmount;
         this.bribeRadius = bribeRadius;
-        setMoveStrategy(new AlliedMove(this));
+        setMoveStrategy(new DijkstraMove(this));
     }
 
     public boolean isAllied() {
@@ -54,7 +54,6 @@ public class Mercenary extends Enemy implements Interactable {
         allied = true;
         spendCost(player);
         setOverlapStrategy(new DefaultOverlap());
-        setMoveStrategy(new RandomMove(this));
     }
 
     @Override
