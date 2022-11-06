@@ -95,7 +95,7 @@ public class Player extends Entity implements Battleable {
         bomb.onPutDown(map, getPosition());
     }
 
-    public void triggerNext(int currentTick) {
+    public void triggerNextPotion(int currentTick) {
         if (potionQueue.isEmpty()) {
             inEffective = null;
             changeState(new BaseState());
@@ -114,13 +114,13 @@ public class Player extends Entity implements Battleable {
         inventory.remove(potion);
         potionQueue.add(potion);
         if (inEffective == null) {
-            triggerNext(tick);
+            triggerNextPotion(tick);
         }
     }
 
     public void onTick(int tick) {
         if (inEffective == null || tick == nextTrigger) {
-            triggerNext(tick);
+            triggerNextPotion(tick);
         }
     }
 
