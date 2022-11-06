@@ -11,8 +11,11 @@ public class Assassin extends Mercenary {
     public static final double DEFAULT_ATTACK = 10.0;
     public static final double DEFAULT_HEALTH = 20.0;
     public final static double DEFAULT_BRIBE_FAIL_RATE = 0.5;
-    private double rate;
     private final static int PRECISION = 1000;
+    private final static int SEED = 5;
+    private final Random random = new Random(SEED);
+
+    private double rate;
 
     public Assassin(Position position, double health, double attack, int bribeAmount, int bribeRadius, double rate) {
         super(position, health, attack, bribeAmount, bribeRadius);
@@ -22,9 +25,7 @@ public class Assassin extends Mercenary {
     @Override
     public void interact(Player player, Game game) {
         // Determine whether can be successfully bribe
-        Random random = new Random();
         int upper = (int) Math.round(rate * PRECISION);
-
         if (random.nextInt(PRECISION) < upper) {
             super.interact(player, game);
         } else {

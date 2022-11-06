@@ -5,7 +5,6 @@ import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.strategy.move.DijkstraMove;
-import dungeonmania.entities.strategy.move.RandomMove;
 import dungeonmania.entities.strategy.overlap.DefaultOverlap;
 import dungeonmania.util.Position;
 
