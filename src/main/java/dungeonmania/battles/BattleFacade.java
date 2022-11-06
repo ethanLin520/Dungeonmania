@@ -50,8 +50,8 @@ public class BattleFacade {
         List<BattleRound> rounds = BattleStatistics.battle(playerBattleStatistics, enemyBattleStatistics);
 
         // 3. update health to the actual statistics
-        player.getBattleStatistics().setHealth(playerBattleStatistics.getHealth());
-        enemy.getBattleStatistics().setHealth(enemyBattleStatistics.getHealth());
+        player.setBattleStatistics(playerBattleStatistics);
+        enemy.setBattleStatistics(enemyBattleStatistics);
 
         // 4. call to decrease durability of items
         for (BattleItem item : battleItems) {

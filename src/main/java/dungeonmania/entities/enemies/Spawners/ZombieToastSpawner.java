@@ -1,18 +1,15 @@
-package dungeonmania.entities.enemies;
+package dungeonmania.entities.enemies.Spawners;
 
 import dungeonmania.Game;
-import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.strategy.destroy.EnemyDestroy;
 import dungeonmania.util.Position;
 
-public class ZombieToastSpawner extends Entity implements Interactable {
+public class ZombieToastSpawner extends Spawner implements Interactable {
     public static final int DEFAULT_SPAWN_INTERVAL = 0;
 
     public ZombieToastSpawner(Position position, int spawnInterval) {
         super(position);
-        setDestroyStrategy(new EnemyDestroy(this));
     }
 
     public void spawn(Game game) {

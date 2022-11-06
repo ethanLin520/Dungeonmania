@@ -44,6 +44,10 @@ public abstract class Enemy extends Entity implements Battleable {
         return getBattleStatistics().getHealth();
     }
 
+    public void setBattleStatistics(BattleStatistics newStat) {
+        this.battleStatistics = newStat;
+    }
+
     public abstract void move(Game game);
 
     /**
