@@ -1,11 +1,13 @@
 package dungeonmania.entities.enemies;
 
+import java.util.List;
+
 import dungeonmania.Game;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Treasure;
+import dungeonmania.entities.strategy.move.AlliedMove;
 import dungeonmania.entities.strategy.move.DijkstraMove;
-import dungeonmania.entities.strategy.move.RandomMove;
 import dungeonmania.entities.strategy.overlap.DefaultOverlap;
 import dungeonmania.util.Position;
 
@@ -48,6 +50,23 @@ public class Mercenary extends Enemy implements Interactable {
         }
 
     }
+
+    @Override
+    public void move(Game game) {
+        getMoveStrategy().apply(game);
+
+        if (getMoveStrategy() instanceof DijkstraMove) {
+            Position playerPos = game.getMap().getPlayer().getPosition();
+            List<Position> cardinally = playerPos.getCardinallyAdjacentPositions();
+            
+            for (Position pos : cardinally) {
+                if (pos.equals(getPosition())) {
+                    setMoveStrategy(new AlliedMove(this));
+                }
+            }
+        }
+    } 
+
 
     @Override
     public void interact(Player player, Game game) {
