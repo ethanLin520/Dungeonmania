@@ -104,6 +104,15 @@ public class EntityFactory {
         return new Mercenary(pos, mercenaryHealth, mercenaryAttack, mercenaryBribeAmount, mercenaryBribeRadius);
     }
 
+    public Assassin buildAssassin(Position pos) {
+        double assassinHealth = config.optDouble("assassin_health", Assassin.DEFAULT_HEALTH);
+        double assassinAttack = config.optDouble("assassin_attack", Assassin.DEFAULT_ATTACK);
+        int assassinBribeAmount = config.optInt("assassin_bribe_amount", Assassin.DEFAULT_BRIBE_AMOUNT);
+        int assassinBribeRadius = config.optInt("bribe_radius", Assassin.DEFAULT_BRIBE_RADIUS);
+        double assassinRate = config.optDouble("assassin_bribe_fail_rate", Assassin.DEFAULT_BRIBE_FAIL_RATE);
+        return new Assassin(pos, assassinHealth, assassinAttack, assassinBribeAmount, assassinBribeRadius, assassinRate);
+    }
+
     public Bow buildBow() {
         int bowDurability = config.optInt("bow_durability");
         return new Bow(bowDurability);
@@ -165,6 +174,8 @@ public class EntityFactory {
             return new Door(pos, jsonEntity.getInt("key"));
         case "key":
             return new Key(pos, jsonEntity.getInt("key"));
+        case "assassin":
+            return buildAssassin(pos);
         default:
             return null;
         }

@@ -7,6 +7,10 @@ import dungeonmania.entities.Player;
 import dungeonmania.util.Position;
 
 public class Assassin extends Mercenary {
+    public static final int DEFAULT_BRIBE_AMOUNT = 5;
+    public static final double DEFAULT_ATTACK = 10.0;
+    public static final double DEFAULT_HEALTH = 20.0;
+    public final static double DEFAULT_BRIBE_FAIL_RATE = 0.5;
     private double rate;
     private final static int PRECISION = 1000;
 
