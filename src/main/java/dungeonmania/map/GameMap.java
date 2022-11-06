@@ -14,7 +14,7 @@ import dungeonmania.entities.Portal;
 import dungeonmania.entities.Switch;
 import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.enemies.Enemy;
-import dungeonmania.entities.enemies.ZombieToastSpawner;
+import dungeonmania.entities.enemies.Spawners.ZombieToastSpawner;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 

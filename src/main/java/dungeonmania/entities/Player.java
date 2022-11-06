@@ -158,4 +158,8 @@ public class Player extends Entity implements Battleable {
     public void addOneKill() {
         this.kills++;
     }
+
+    public void setBattleStatistics(BattleStatistics newStat) {
+        this.battleStatistics = newStat;
+    }
 }
