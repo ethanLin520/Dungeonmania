@@ -1,22 +1,22 @@
 package dungeonmania.entities.strategy.move;
 
 import dungeonmania.Game;
-import dungeonmania.entities.Entity;
+import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
 
-public class AlliedMove implements MoveStrategy {
-    private Entity entity;
+public class AlliedMove implements MoveStrategy{
+    private Mercenary merc;
 
-    public AlliedMove(Entity entity) {
-        this.entity = entity;
+    public AlliedMove(Mercenary merc) {
+        this.merc = merc;
     }
 
     @Override
     public void apply(Game game) {
+        // Occupies the square the player was previous in
         GameMap map = game.getMap();
-        Position currPos = entity.getPosition();
-        Position nextPos = map.dijkstraPathFind(currPos, map.getPlayer().getPosition(), entity);
-        map.moveTo(entity, nextPos);
+        Position nextPos = map.getPlayer().getPreviousDistinctPosition();
+        map.moveTo(merc, nextPos);
     }
 }

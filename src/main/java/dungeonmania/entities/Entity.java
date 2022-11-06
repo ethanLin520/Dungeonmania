@@ -108,11 +108,12 @@ public abstract class Entity {
         this.destroyStrategy = destroyStrategy;
     }
 
+    protected final void setMoveStrategy(MoveStrategy moveStrategy) {
+        this.moveStrategy = moveStrategy;
+    }
+    
     protected final MoveStrategy getMoveStrategy() {
         return this.moveStrategy;
     }
 
-    protected final void setMoveStrategy(MoveStrategy moveStrategy) {
-        this.moveStrategy = moveStrategy;
-    }
 }
