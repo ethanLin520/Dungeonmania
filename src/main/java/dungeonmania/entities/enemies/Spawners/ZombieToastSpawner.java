@@ -12,6 +12,7 @@ public class ZombieToastSpawner extends Spawner implements Interactable {
         super(position);
     }
 
+    @Override
     public void spawn(Game game) {
         game.getEntityFactory().spawnZombie(game, this);
     }
