@@ -10,40 +10,22 @@
         "y" : 1
       },{
         "type" : "mercenary",
-        "x" : 5,
-        "y" : 5
-      },{
-        "type" : "wall",
-        "x" : 4,
-        "y" : 0
-      },{
-        "type" : "wall",
-        "x" : 5,
-        "y" : 0
-      },{
-        "type" : "wall",
         "x" : 6,
-        "y" : 1
-      },{
-        "type" : "wall",
-        "x" : 6,
-        "y" : 0
-      },{
-        "type" : "wall",
-        "x" : 6,
-        "y" : 2
-      },{
-        "type" : "wall",
-        "x" : 4,
-        "y" : 2
-      },{
-        "type" : "wall",
-        "x" : 5,
         "y" : 2
       }, {
         "type": "exit",
-        "x": 5,
-        "y": 5
+        "x": 10,
+        "y": 10
+      }, {
+          "x": 6,
+          "y": 1,
+          "type": "portal",
+          "colour": "RED"
+      },{
+          "x": 0,
+          "y": 1,
+          "type": "portal",
+          "colour": "RED"
       }
     ],
     "goal-condition": {"goal": "exit"}
