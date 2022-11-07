@@ -1,7 +1,6 @@
 package dungeonmania.mvp;
 
 import dungeonmania.DungeonManiaController;
-import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
@@ -197,7 +196,7 @@ public class MercenaryTest {
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
-
+        
         // Now the Move Strategy of the Merc should be AlliedMove
         Position prevPos = TestUtils.getPlayerPos(res);
         res = dmc.tick(Direction.RIGHT);
