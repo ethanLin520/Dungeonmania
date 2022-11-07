@@ -196,7 +196,7 @@ public class MercenaryTest {
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
-        
+
         // Now the Move Strategy of the Merc should be AlliedMove
         Position prevPos = TestUtils.getPlayerPos(res);
         res = dmc.tick(Direction.RIGHT);
