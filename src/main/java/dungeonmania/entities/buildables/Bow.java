@@ -38,7 +38,7 @@ public class Bow extends Buildable  {
     }
 
 
-    public boolean formula(Inventory inventory) {
+    public boolean isBuildable(Inventory inventory) {
         int wood = inventory.count(Wood.class);
         int arrows = inventory.count(Arrow.class);
 
@@ -47,5 +47,11 @@ public class Bow extends Buildable  {
         }
 
         return false;
+    }
+
+    @Override
+    public void logParts() {
+        partsNeed.setAmount(Wood.class, 1);
+        partsNeed.setAmount(Arrow.class, 3);
     }
 }

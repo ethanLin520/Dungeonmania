@@ -9,6 +9,8 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.buildables.Bow;
+import dungeonmania.entities.buildables.Buildable;
+import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.Arrow;
 import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.collectables.Sword;
@@ -17,6 +19,8 @@ import dungeonmania.entities.collectables.Wood;
 
 public class Inventory {
     private List<InventoryItem> items = new ArrayList<>();
+    private static final List<Buildable> buildables = new ArrayList<>();
+    public static final List<Class<? extends Buildable>> VALID_BUILDABLES = List.of(Bow.class, Shield.class);
 
     public boolean add(InventoryItem item) {
         items.add(item);
@@ -26,6 +30,13 @@ public class Inventory {
     public void remove(InventoryItem item) {
         items.remove(item);
     }
+
+    // public List<Buildable> getBuildables() {
+    //     for (Class<? extends Buildable> c : VALID_BUILDABLES) {
+            
+    //     }
+    //     return null;
+    // }
 
     public List<String> getBuildables() {
 

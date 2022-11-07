@@ -38,7 +38,7 @@ public class Shield extends Buildable {
         return durability;
     }
 
-    public boolean formula(Inventory inventory) {
+    public boolean isBuildable(Inventory inventory) {
         int wood = inventory.count(Wood.class);
         int keys = inventory.count(Key.class);
         int treasure = inventory.count(Treasure.class);
@@ -48,5 +48,11 @@ public class Shield extends Buildable {
         }
 
         return false;
+    }
+
+    @Override
+    public void logParts() {
+        // TODO Auto-generated method stub
+        
     }
 }
