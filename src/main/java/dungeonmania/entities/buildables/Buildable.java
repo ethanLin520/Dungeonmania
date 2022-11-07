@@ -1,15 +1,14 @@
 package dungeonmania.entities.buildables;
 
-import java.util.List;
-
 import dungeonmania.entities.BattleItem;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.buildables.parts.Parts;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.util.Position;
 
 public abstract class Buildable extends Entity implements InventoryItem, BattleItem {
-    protected Parts partsNeed = new Parts();
+    protected Parts partsNeed;
 
     public Buildable(Position position) {
         super(position);
@@ -17,4 +16,5 @@ public abstract class Buildable extends Entity implements InventoryItem, BattleI
 
     public abstract boolean isBuildable(Inventory inventory);
     public abstract void logParts();
+    public abstract String getType();
 }

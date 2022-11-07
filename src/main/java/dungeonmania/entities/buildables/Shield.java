@@ -2,6 +2,9 @@ package dungeonmania.entities.buildables;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
+import dungeonmania.entities.buildables.parts.AndParts;
+import dungeonmania.entities.buildables.parts.BasicParts;
+import dungeonmania.entities.buildables.parts.OrParts;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.inventory.Inventory;
 
@@ -13,6 +16,12 @@ public class Shield extends Buildable {
         super(null);
         this.durability = durability;
         this.defence = defence;
+    }
+
+    public Shield() {
+        super(null);
+        this.durability = 0;
+        this.defence = 0;
     }
 
     @Override
@@ -52,7 +61,14 @@ public class Shield extends Buildable {
 
     @Override
     public void logParts() {
-        // TODO Auto-generated method stub
-        
+        partsNeed = new AndParts(
+            new BasicParts(Wood.class, 2),
+            new OrParts(new BasicParts(Valuable.class, 1), new BasicParts(Key.class, 1))
+        );
+    }
+
+    @Override
+    public String getType() {
+        return "shield";
     }
 }

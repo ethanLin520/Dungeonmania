@@ -4,7 +4,6 @@ package dungeonmania.mvp;
 import dungeonmania.DungeonManiaController;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Direction;
-import dungeonmania.util.Position;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

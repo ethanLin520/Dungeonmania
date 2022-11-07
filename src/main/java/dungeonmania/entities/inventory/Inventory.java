@@ -19,8 +19,7 @@ import dungeonmania.entities.collectables.Wood;
 
 public class Inventory {
     private List<InventoryItem> items = new ArrayList<>();
-    private static final List<Buildable> buildables = new ArrayList<>();
-    public static final List<Class<? extends Buildable>> VALID_BUILDABLES = List.of(Bow.class, Shield.class);
+    public static final List<Buildable> VALID_BUILDABLES = List.of(new Bow(), new Shield());
 
     public boolean add(InventoryItem item) {
         items.add(item);
@@ -31,26 +30,12 @@ public class Inventory {
         items.remove(item);
     }
 
-    // public List<Buildable> getBuildables() {
-    //     for (Class<? extends Buildable> c : VALID_BUILDABLES) {
-            
-    //     }
-    //     return null;
-    // }
-
     public List<String> getBuildables() {
-
-        int wood = count(Wood.class);
-        int arrows = count(Arrow.class);
-        int treasure = count(Treasure.class);
-        int keys = count(Key.class);
         List<String> result = new ArrayList<>();
-
-        if (wood >= 1 && arrows >= 3) {
-            result.add("bow");
-        }
-        if (wood >= 2 && (treasure >= 1 || keys >= 1)) {
-            result.add("shield");
+        for (Buildable buildable: VALID_BUILDABLES) {
+            if (buildable.isBuildable(this)) {
+                result.add(buildable.getType());
+            }
         }
         return result;
     }

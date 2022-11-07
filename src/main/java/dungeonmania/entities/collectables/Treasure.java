@@ -2,7 +2,7 @@ package dungeonmania.entities.collectables;
 
 import dungeonmania.util.Position;
 
-public class Treasure extends Collectable implements Valuable {
+public class Treasure extends Valuable {
     public Treasure(Position position) {
         super(position);
     }

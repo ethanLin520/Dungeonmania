@@ -1,5 +1,9 @@
 package dungeonmania.entities.collectables;
 
-public interface Valuable {
-    //
+import dungeonmania.util.Position;
+
+public abstract class Valuable extends Collectable {
+    public Valuable(Position position) {
+        super(position);
+    }
 }
