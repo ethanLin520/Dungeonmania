@@ -3,7 +3,7 @@
   "ally_defence": 0,
   "assassin_attack": 10,
   "assassin_bribe_amount": 1,
-  "assassin_bribe_fail_rate": 0,
+  "assassin_bribe_fail_rate": 1,
   "assassin_health": 10,
   "assassin_recon_radius": 5,
   "bomb_radius": 0,

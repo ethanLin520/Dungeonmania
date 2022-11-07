@@ -56,7 +56,7 @@ public class Mercenary extends Enemy implements Interactable {
         if (getMoveStrategy() instanceof DijkstraMove) {
             Position playerPos = game.getMap().getPlayer().getPosition();
             List<Position> cardinally = playerPos.getCardinallyAdjacentPositions();
-            
+
             for (Position pos : cardinally) {
                 if (pos.equals(getPosition()) && isAllied()) {
                     setMoveStrategy(new AlliedMove(this));
