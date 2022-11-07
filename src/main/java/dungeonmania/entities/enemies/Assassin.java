@@ -26,7 +26,7 @@ public class Assassin extends Mercenary {
     public void interact(Player player, Game game) {
         // Determine whether can be successfully bribe
         int upper = (int) Math.round(rate * PRECISION);
-        if (random.nextInt(PRECISION) < upper) {
+        if (random.nextInt(PRECISION) >= upper) {
             super.interact(player, game);
         } else {
             // bribe failed but still cost
