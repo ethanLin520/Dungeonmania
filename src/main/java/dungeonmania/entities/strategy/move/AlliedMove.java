@@ -17,6 +17,9 @@ public class AlliedMove implements MoveStrategy{
         // Occupies the square the player was previous in
         GameMap map = game.getMap();
         Position nextPos = map.getPlayer().getPreviousDistinctPosition();
-        map.moveTo(merc, nextPos);
+        Position playerPos = map.getPlayer().getPosition();
+        if (!nextPos.equals(playerPos)) {
+            map.moveTo(merc, nextPos);
+        }
     }
 }
