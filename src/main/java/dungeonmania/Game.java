@@ -37,6 +37,9 @@ public class Game {
     private PriorityQueue<ComparableCallback> sub = new PriorityQueue<>();
     private PriorityQueue<ComparableCallback> addingSub = new PriorityQueue<>();
 
+    private int kills = 0;
+    private int valuableCollect = 0;
+
     public Game(String dungeonName) {
         this.name = dungeonName;
         this.map = new GameMap();
@@ -217,8 +220,23 @@ public class Game {
         this.battleFacade = battleFacade;
     }
 
+    public int getKills() {
+        return kills;
+    }
+
+    public void addOneKill() {
+        this.kills++;
+    }
+
     public int getInitialTreasureCount() {
         return initialTreasureCount;
     }
 
+    public int getValuableCollect() {
+        return valuableCollect;
+    }
+
+    public void collectOneValuable() {
+        valuableCollect++;
+    }
 }

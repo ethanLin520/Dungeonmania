@@ -1,7 +1,6 @@
 package dungeonmania.goals;
 
 import dungeonmania.Game;
-import dungeonmania.entities.Player;
 import dungeonmania.entities.enemies.Spawners.Spawner;
 
 public class EnemyGoal implements Goal {
@@ -13,9 +12,8 @@ public class EnemyGoal implements Goal {
 
     @Override
     public boolean achieved(Game game) {
-        Player player = game.getPlayer();
-        if (player == null) return false;
-        return player.getKills() >= targetKill && game.getMap().getEntities(Spawner.class).isEmpty();
+        if (game.getPlayer() == null) return false;
+        return game.getKills() >= targetKill && game.getMap().getEntities(Spawner.class).isEmpty();
     }
 
     @Override

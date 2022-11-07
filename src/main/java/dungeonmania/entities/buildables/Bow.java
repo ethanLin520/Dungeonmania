@@ -41,11 +41,11 @@ public class Bow extends Buildable  {
     public boolean formula(Inventory inventory) {
         int wood = inventory.count(Wood.class);
         int arrows = inventory.count(Arrow.class);
-        
+
         if (wood >= 1 && arrows >= 3) {
             return true;
         }
-        
+
         return false;
     }
 }

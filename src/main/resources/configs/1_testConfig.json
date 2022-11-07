@@ -6,7 +6,7 @@
   "assassin_bribe_fail_rate": 1,
   "assassin_health": 10,
   "assassin_recon_radius": 5,
-  "bomb_radius": 0,
+  "bomb_radius": 10,
   "bow_durability": 0,
   "bribe_amount": 0,
   "bribe_radius": 0,
@@ -31,7 +31,7 @@
   "spider_spawn_interval": 0,
   "sword_attack": 0,
   "sword_durability": 0,
-  "treasure_goal": 0,
+  "treasure_goal": 2,
   "zombie_attack": 0,
   "zombie_health": 0,
   "zombie_spawn_interval": 0

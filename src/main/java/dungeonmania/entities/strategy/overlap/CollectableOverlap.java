@@ -3,6 +3,7 @@ package dungeonmania.entities.strategy.overlap;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Collectable;
+import dungeonmania.entities.collectables.Valuable;
 import dungeonmania.map.GameMap;
 
 public class CollectableOverlap implements OverlapStrategy {
@@ -15,8 +16,11 @@ public class CollectableOverlap implements OverlapStrategy {
     @Override
     public void apply(GameMap map, Entity entity) {
         if (entity instanceof Player) {
-            if (!((Player) entity).pickUp(collectable)) return;
+            Player p = (Player) entity;
+            if (!p.pickUp(collectable)) return;
             map.destroyEntity(collectable);
+            if (collectable instanceof Valuable)
+                map.getGame().collectOneValuable();
         }
     }
 }

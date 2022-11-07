@@ -46,7 +46,7 @@ public class Shield extends Buildable {
         if (wood >= 2 && (treasure >= 1 || keys >= 1)) {
             return true;
         }
-        
+
         return false;
     }
 }
