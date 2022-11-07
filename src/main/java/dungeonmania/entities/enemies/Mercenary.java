@@ -37,14 +37,14 @@ public class Mercenary extends Enemy implements Interactable {
      * @param player
      * @return
      */
-    private boolean canBeBribed(Player player) {
+    protected boolean canBeBribed(Player player) {
         return bribeRadius >= 0 && player.countEntityOfType(Treasure.class) >= bribeAmount;
     }
 
     /**
-     * bribe the merc
+     * spend Treasure to bribe the merc
      */
-    private void bribe(Player player) {
+    protected void spendCost(Player player) {
         for (int i = 0; i < bribeAmount; i++) {
             player.use(Treasure.class);
         }
@@ -71,7 +71,7 @@ public class Mercenary extends Enemy implements Interactable {
     @Override
     public void interact(Player player, Game game) {
         allied = true;
-        bribe(player);
+        spendCost(player);
         setOverlapStrategy(new DefaultOverlap());
     }
 

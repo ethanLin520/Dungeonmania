@@ -53,6 +53,7 @@ public class DungeonManiaController {
             game = builder.setConfigName(configName).setDungeonName(dungeonName).buildGame();
             return ResponseBuilder.getDungeonResponse(game);
         } catch (JSONException e) {
+            System.out.println(e.getMessage());
             return null;
         }
     }
