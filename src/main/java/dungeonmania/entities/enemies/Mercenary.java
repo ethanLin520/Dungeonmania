@@ -60,7 +60,7 @@ public class Mercenary extends Enemy implements Interactable {
             List<Position> cardinally = playerPos.getCardinallyAdjacentPositions();
             
             for (Position pos : cardinally) {
-                if (pos.equals(getPosition())) {
+                if (pos.equals(getPosition()) && isAllied()) {
                     setMoveStrategy(new AlliedMove(this));
                 }
             }
