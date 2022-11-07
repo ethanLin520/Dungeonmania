@@ -53,8 +53,6 @@ public class Mercenary extends Enemy implements Interactable {
 
     @Override
     public void move(Game game) {
-        getMoveStrategy().apply(game);
-
         if (getMoveStrategy() instanceof DijkstraMove) {
             Position playerPos = game.getMap().getPlayer().getPosition();
             List<Position> cardinally = playerPos.getCardinallyAdjacentPositions();
@@ -65,6 +63,7 @@ public class Mercenary extends Enemy implements Interactable {
                 }
             }
         }
+        getMoveStrategy().apply(game);
     } 
 
 
