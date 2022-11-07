@@ -12,6 +12,7 @@ public abstract class Buildable extends Entity implements InventoryItem, BattleI
 
     public Buildable(Position position) {
         super(position);
+        logParts();
     }
 
     public abstract boolean isBuildable(Inventory inventory);

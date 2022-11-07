@@ -51,7 +51,7 @@ public class Bow extends Buildable  {
 
     @Override
     public void logParts() {
-        partsNeed = new AndParts(new BasicParts(Wood.class, 1), new BasicParts(Wood.class, 3));
+        partsNeed = new AndParts(new BasicParts(Wood.class, 1), new BasicParts(Arrow.class, 3));
     }
 
     @Override
