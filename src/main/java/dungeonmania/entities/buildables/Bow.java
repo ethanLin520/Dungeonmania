@@ -2,6 +2,9 @@ package dungeonmania.entities.buildables;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
+import dungeonmania.entities.EntityFactory;
+import dungeonmania.entities.buildables.parts.AndParts;
+import dungeonmania.entities.buildables.parts.BasicParts;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.inventory.Inventory;
 
@@ -13,6 +16,11 @@ public class Bow extends Buildable  {
         super(null);
         this.durability = durability;
         setType("bow");
+    }
+
+    public Bow() {
+        super(null);
+        this.durability = 0;
     }
 
     @Override
@@ -38,15 +46,19 @@ public class Bow extends Buildable  {
         return durability;
     }
 
+    @Override
+    public void logParts() {
+        partsNeed = new AndParts(new BasicParts(Wood.class, 1), new BasicParts(Arrow.class, 3));
+    }
 
-    public boolean formula(Inventory inventory) {
-        int wood = inventory.count(Wood.class);
-        int arrows = inventory.count(Arrow.class);
-        
-        if (wood >= 1 && arrows >= 3) {
-            return true;
-        }
-        
-        return false;
+    @Override
+    public String getType() {
+        return "bow";
+    }
+
+    @Override
+    public Buildable build(EntityFactory factory, Inventory inventory) {
+        if (!useParts(inventory)) return null;
+        return factory.buildBow();
     }
 }

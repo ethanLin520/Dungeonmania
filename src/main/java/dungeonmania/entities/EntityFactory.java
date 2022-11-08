@@ -4,7 +4,6 @@ import dungeonmania.Game;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.*;
-import dungeonmania.entities.collectables.Sword;
 import dungeonmania.entities.enemies.*;
 import dungeonmania.entities.enemies.Spawners.ZombieToastSpawner;
 import dungeonmania.map.GameMap;
@@ -176,6 +175,8 @@ public class EntityFactory {
             return new Key(pos, jsonEntity.getInt("key"));
         case "assassin":
             return buildAssassin(pos);
+        case "sun_stone":
+            return new SunStone(pos);
         default:
             return null;
         }

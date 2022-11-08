@@ -9,11 +9,10 @@ import java.util.stream.Collectors;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.Switch;
-import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.entities.strategy.overlap.BombOverlap;
 import dungeonmania.map.GameMap;
 
-public class Bomb extends Collectable implements InventoryItem {
+public class Bomb extends Collectable {
     public enum State {
         SPAWNED,
         INVENTORY,

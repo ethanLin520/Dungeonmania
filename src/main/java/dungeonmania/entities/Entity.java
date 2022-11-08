@@ -120,7 +120,7 @@ public abstract class Entity {
     protected final void setMoveStrategy(MoveStrategy moveStrategy) {
         this.moveStrategy = moveStrategy;
     }
-    
+
     protected final MoveStrategy getMoveStrategy() {
         return this.moveStrategy;
     }

@@ -2,6 +2,10 @@ package dungeonmania.entities.buildables;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
+import dungeonmania.entities.EntityFactory;
+import dungeonmania.entities.buildables.parts.AndParts;
+import dungeonmania.entities.buildables.parts.BasicParts;
+import dungeonmania.entities.buildables.parts.OrParts;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.inventory.Inventory;
 
@@ -14,6 +18,12 @@ public class Shield extends Buildable {
         this.durability = durability;
         this.defence = defence;
         setType("shield");
+    }
+
+    public Shield() {
+        super(null);
+        this.durability = 0;
+        this.defence = 0;
     }
 
     @Override
@@ -39,15 +49,25 @@ public class Shield extends Buildable {
         return durability;
     }
 
-    public boolean formula(Inventory inventory) {
-        int wood = inventory.count(Wood.class);
-        int keys = inventory.count(Key.class);
-        int treasure = inventory.count(Treasure.class);
+    @Override
+    public void logParts() {
+        partsNeed = new AndParts(
+            new BasicParts(Wood.class, 2),
+            new OrParts(
+                new OrParts(new BasicParts(SunStone.class, 1), new BasicParts(Key.class, 1)),
+                new BasicParts(Valuable.class, 1)
+            )
+        );
+    }
 
-        if (wood >= 2 && (treasure >= 1 || keys >= 1)) {
-            return true;
-        }
-        
-        return false;
+    @Override
+    public String getType() {
+        return "shield";
+    }
+
+    @Override
+    public Buildable build(EntityFactory factory, Inventory inventory) {
+        if (!useParts(inventory)) return null;
+        return factory.buildShield();
     }
 }

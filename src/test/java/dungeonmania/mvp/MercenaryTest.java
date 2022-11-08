@@ -13,6 +13,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MercenaryTest {
 
+    public static Position getMercPos(DungeonResponse res) {
+        return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
+    }
+
     @Test
     @Tag("12-1")
     @DisplayName("Test mercenary in line with Player moves towards them")
@@ -168,10 +172,6 @@ public class MercenaryTest {
         assertEquals(0, res.getBattles().size());
     }
 
-    private Position getMercPos(DungeonResponse res) {
-        return TestUtils.getEntities(res, "mercenary").get(0).getPosition();
-    }
-
     @Test
     @Tag("12-8")
     @DisplayName("Testing an allied mercenary follows the player")
@@ -196,7 +196,7 @@ public class MercenaryTest {
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
         res = dmc.tick(Direction.RIGHT);
-        
+
         // Now the Move Strategy of the Merc should be AlliedMove
         Position prevPos = TestUtils.getPlayerPos(res);
         res = dmc.tick(Direction.RIGHT);

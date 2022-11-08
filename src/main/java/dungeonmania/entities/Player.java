@@ -26,7 +26,6 @@ public class Player extends Entity implements Battleable {
     private Queue<Potion> potionQueue = new LinkedList<>();
     private Potion inEffective = null;
     private int nextTrigger = 0;
-    private int kills = 0;
 
     private PlayerState state;
 
@@ -58,8 +57,8 @@ public class Player extends Entity implements Battleable {
     }
 
     public boolean build(String entity, EntityFactory factory) {
-        InventoryItem item = inventory.checkBuildCriteria(this, true, entity.equals("shield"), factory);
-        if (item == null) return false;
+        if (!inventory.getBuildables().contains(entity)) return false;
+        InventoryItem item = inventory.doBuild(entity, factory);
         return inventory.add(item);
     }
 
@@ -152,13 +151,5 @@ public class Player extends Entity implements Battleable {
     @Override
     public double getHealth() {
         return getBattleStatistics().getHealth();
-    }
-
-    public int getKills() {
-        return kills;
-    }
-
-    public void addOneKill() {
-        this.kills++;
     }
 }

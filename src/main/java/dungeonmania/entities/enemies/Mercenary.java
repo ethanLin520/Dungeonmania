@@ -65,7 +65,7 @@ public class Mercenary extends Enemy implements Interactable {
             }
         }
         getMoveStrategy().apply(game);
-    } 
+    }
 
 
     @Override

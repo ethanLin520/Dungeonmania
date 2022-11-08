@@ -52,7 +52,7 @@ public class BattleFacade {
         // 3. update health to the actual statistics
         player.setBattleStatistics(playerBattleStatistics);
         enemy.setBattleStatistics(enemyBattleStatistics);
-        if (enemyBaseStatistics.getHealth() < 0) player.addOneKill();
+        if (enemyBaseStatistics.getHealth() < 0) game.addOneKill();
 
         // 4. call to decrease durability of items
         for (BattleItem item : battleItems) {

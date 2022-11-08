@@ -13,6 +13,7 @@ import dungeonmania.util.FileLoader;
 
 public class DungeonManiaController {
     private Game game = null;
+    public static final List<String> VALID_BUILDABLES = List.of("bow", "shield", "midnight_armour", "sceptre");
 
     public String getSkin() {
         return "default";
@@ -84,8 +85,7 @@ public class DungeonManiaController {
      * /game/build
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        List<String> validBuildables = List.of("bow", "shield", "midnight_armour", "sceptre");
-        if (!validBuildables.contains(buildable)) {
+        if (!VALID_BUILDABLES.contains(buildable)) {
             throw new IllegalArgumentException("Only bow, shield, midnight_armour and sceptre can be built");
         }
 
