@@ -6,5 +6,6 @@ import dungeonmania.util.Position;
 public class Treasure extends Collectable implements InventoryItem {
     public Treasure(Position position) {
         super(position);
+        setType("treasure");
     }
 }

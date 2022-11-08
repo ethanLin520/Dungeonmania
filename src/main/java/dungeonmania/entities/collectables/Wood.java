@@ -6,5 +6,6 @@ import dungeonmania.util.Position;
 public class Wood extends Collectable implements InventoryItem {
     public Wood(Position position) {
         super(position);
+        setType("wood");
     }
 }

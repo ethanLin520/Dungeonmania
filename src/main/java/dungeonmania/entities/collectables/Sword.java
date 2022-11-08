@@ -20,6 +20,7 @@ public class Sword extends Collectable implements InventoryItem, BattleItem {
         super(position);
         this.attack = attack;
         this.durability = durability;
+        setType("sword");
     }
 
     @Override

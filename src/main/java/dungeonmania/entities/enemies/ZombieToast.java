@@ -9,6 +9,7 @@ public class ZombieToast extends Enemy {
 
     public ZombieToast(Position position, double health, double attack) {
         super(position, health, attack);
+        setType("zombie_toast");
         setMoveStrategy(new RandomMove(this));
     }
 }

@@ -15,6 +15,7 @@ public class Door extends Entity {
     public Door(Position position, int number) {
         super(position.asLayer(Entity.DOOR_LAYER));
         this.number = number;
+        setType("door");
         setOverlapStrategy(new DoorOverlap(this));
     }
 

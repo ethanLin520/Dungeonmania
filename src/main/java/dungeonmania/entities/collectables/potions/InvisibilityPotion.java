@@ -11,6 +11,7 @@ public class InvisibilityPotion extends Potion {
 
     public InvisibilityPotion(Position position, int duration) {
         super(position, duration);
+        setType("invisibility_potion");
     }
 
     @Override

@@ -15,6 +15,7 @@ public class Portal extends Entity {
     public Portal(Position position, ColorCodedType color) {
         super(position);
         this.color = color;
+        setType("portal");
         setOverlapStrategy(new PortalOverlap(this));
     }
 

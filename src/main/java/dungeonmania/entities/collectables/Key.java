@@ -9,6 +9,7 @@ public class Key extends Collectable implements InventoryItem {
     public Key(Position position, int number) {
         super(position);
         this.number = number;
+        setType("key");
     }
 
     public int getnumber() {

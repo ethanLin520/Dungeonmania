@@ -40,6 +40,7 @@ public class Player extends Entity implements Battleable {
                 BattleStatistics.DEFAULT_PLAYER_DAMAGE_REDUCER);
         inventory = new Inventory();
         state = new BaseState();
+        setType("player");
         setOverlapStrategy(new PlayerOverlap(this));
         setMoveStrategy(new PlayerMove(this));
     }

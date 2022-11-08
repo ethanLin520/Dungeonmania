@@ -3,6 +3,10 @@ package dungeonmania.response.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import dungeonmania.Game;
+import dungeonmania.entities.Entity;
+import dungeonmania.map.GameMap;
+import dungeonmania.response.*;;
 public final class DungeonResponse {
     private final String dungeonId;
     private final String dungeonName;
@@ -30,6 +34,22 @@ public final class DungeonResponse {
         this.goals = goals;
         this.animations = animations;
     }
+
+    // public DungeonResponse(Game game) {
+        // this.dungeonId = game.getId();
+        // this.dungeonName = game.getName();
+        // List<EntityResponse> eList = new ArrayList<>();
+        // GameMap map = game.getMap();
+        // for (Entity e : map.getEntities()) {
+        //     // eList.add(new EntityResponse(e.getId(), e.getType(), e.getPosition(), ));
+        // }
+        // this.entities = eList;
+        // this.inventory = inventory;
+        // this.battles = battles;
+        // this.buildables = buildables;
+        // this.goals = goals;
+        // this.animations = animations;
+    // }
 
     public List<AnimationQueue> getAnimations() {
         return animations;

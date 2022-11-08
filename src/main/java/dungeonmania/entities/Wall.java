@@ -7,6 +7,7 @@ import dungeonmania.util.Position;
 public class Wall extends Entity {
     public Wall(Position position) {
         super(position.asLayer(Entity.CHARACTER_LAYER));
+        setType("wall");
     }
 
     @Override

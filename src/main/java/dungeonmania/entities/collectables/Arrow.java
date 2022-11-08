@@ -6,5 +6,6 @@ import dungeonmania.util.Position;
 public class Arrow extends Collectable implements InventoryItem {
     public Arrow(Position position) {
         super(position);
+        setType("arrow");
     }
 }

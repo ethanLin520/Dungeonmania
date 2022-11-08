@@ -62,6 +62,7 @@ public class DungeonManiaController {
      * /game/dungeonResponseModel
      */
     public DungeonResponse getDungeonResponseModel() {
+        // return new DungeonResponse(game);
         return null;
     }
 
@@ -102,7 +103,8 @@ public class DungeonManiaController {
      * /game/save
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
-        return null;
+        System.out.println(name);
+        throw new IllegalArgumentException(name);
     }
 
     /**
