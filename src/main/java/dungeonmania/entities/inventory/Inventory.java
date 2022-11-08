@@ -7,15 +7,10 @@ import java.util.stream.Collectors;
 import dungeonmania.entities.BattleItem;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
-import dungeonmania.entities.Player;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.buildables.Buildable;
 import dungeonmania.entities.buildables.Shield;
-import dungeonmania.entities.collectables.Arrow;
-import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.collectables.Sword;
-import dungeonmania.entities.collectables.Treasure;
-import dungeonmania.entities.collectables.Wood;
 
 public class Inventory {
     private List<InventoryItem> items = new ArrayList<>();
@@ -30,6 +25,9 @@ public class Inventory {
         items.remove(item);
     }
 
+    /**
+     * @return List of Buildable types can be built using current inventory.
+     */
     public List<String> getBuildables() {
         List<String> result = new ArrayList<>();
         for (Buildable buildable: VALID_BUILDABLES) {
@@ -40,33 +38,18 @@ public class Inventory {
         return result;
     }
 
-    public InventoryItem checkBuildCriteria(Player p, boolean remove, boolean forceShield, EntityFactory factory) {
-
-        List<Wood> wood = getEntities(Wood.class);
-        List<Arrow> arrows = getEntities(Arrow.class);
-        List<Treasure> treasure = getEntities(Treasure.class);
-        List<Key> keys = getEntities(Key.class);
-
-        if (wood.size() >= 1 && arrows.size() >= 3 && !forceShield) {
-            if (remove) {
-                items.remove(wood.get(0));
-                items.remove(arrows.get(0));
-                items.remove(arrows.get(1));
-                items.remove(arrows.get(2));
-            }
-            return factory.buildBow();
-
-        } else if (wood.size() >= 2 && (treasure.size() >= 1 || keys.size() >= 1)) {
-            if (remove) {
-                items.remove(wood.get(0));
-                items.remove(wood.get(1));
-                if (treasure.size() >= 1) {
-                    items.remove(treasure.get(0));
-                } else {
-                    items.remove(keys.get(0));
-                }
-            }
-            return factory.buildShield();
+    /**
+     * Build a new buildable using the current inventory.
+     * @param target
+     * @param factory
+     * @param doBuild
+     * @return If given target is not a valid Buildable or not enough inventory, return null.
+     *          Otherwise return new Buildable
+     */
+    public InventoryItem doBuild(String target, EntityFactory factory) {
+        for (Buildable b : VALID_BUILDABLES) {
+            if (b.getType() == target)
+                return b.build(factory, this);
         }
         return null;
     }

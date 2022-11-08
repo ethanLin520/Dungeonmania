@@ -15,4 +15,10 @@ public class OrParts implements Parts {
     public boolean enough(Inventory inventory) {
         return part1.enough(inventory) || part2.enough(inventory);
     }
+
+    @Override
+    public void use(Inventory inventory) {
+        if (part1.enough(inventory)) part1.use(inventory);
+        else part2.use(inventory);
+    }
 }

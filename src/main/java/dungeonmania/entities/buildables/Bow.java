@@ -2,6 +2,7 @@ package dungeonmania.entities.buildables;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
+import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.buildables.parts.AndParts;
 import dungeonmania.entities.buildables.parts.BasicParts;
 import dungeonmania.entities.collectables.*;
@@ -57,5 +58,11 @@ public class Bow extends Buildable  {
     @Override
     public String getType() {
         return "bow";
+    }
+
+    @Override
+    public Buildable build(EntityFactory factory, Inventory inventory) {
+        if (!useParts(inventory)) return null;
+        return factory.buildBow();
     }
 }

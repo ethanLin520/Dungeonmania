@@ -2,6 +2,7 @@ package dungeonmania.entities.buildables;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
+import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.buildables.parts.AndParts;
 import dungeonmania.entities.buildables.parts.BasicParts;
 import dungeonmania.entities.buildables.parts.OrParts;
@@ -70,5 +71,11 @@ public class Shield extends Buildable {
     @Override
     public String getType() {
         return "shield";
+    }
+
+    @Override
+    public Buildable build(EntityFactory factory, Inventory inventory) {
+        if (!useParts(inventory)) return null;
+        return factory.buildShield();
     }
 }
