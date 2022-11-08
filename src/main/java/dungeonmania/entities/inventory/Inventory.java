@@ -9,12 +9,13 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.buildables.Buildable;
+import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.Sword;
 
 public class Inventory {
     private List<InventoryItem> items = new ArrayList<>();
-    public static final List<Buildable> VALID_BUILDABLES = List.of(new Bow(), new Shield());
+    public static final List<Buildable> VALID_BUILDABLES = List.of(new Bow(), new Shield(), new Sceptre());
 
     public boolean add(InventoryItem item) {
         items.add(item);

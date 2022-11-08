@@ -53,7 +53,7 @@ public class Shield extends Buildable {
         partsNeed = new AndParts(
             new BasicParts(Wood.class, 2),
             new OrParts(
-                new OrParts(new BasicParts(SunStone.class, 1), new BasicParts(Key.class, 1)),
+                new BasicParts(Key.class, 1),
                 new BasicParts(Valuable.class, 1)
             )
         );
