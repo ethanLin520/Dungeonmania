@@ -13,4 +13,9 @@ public class Key extends Collectable {
     public int getnumber() {
         return number;
     }
+
+    @Override
+    public boolean interchangeableWithSS() {
+        return true;
+    }
 }

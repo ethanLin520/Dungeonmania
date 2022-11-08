@@ -13,7 +13,7 @@ import dungeonmania.entities.buildables.parts.Parts;
 import dungeonmania.entities.collectables.Arrow;
 import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.collectables.SunStone;
-import dungeonmania.entities.collectables.Valuable;
+import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.Wood;
 import dungeonmania.entities.inventory.Inventory;
 
@@ -54,7 +54,7 @@ public class Sceptre extends Buildable {
     public void logParts() {
         List<Parts> parts = new ArrayList<>();
         parts.add(new OrParts(new BasicParts(Wood.class, 1), new BasicParts(Arrow.class, 2)));
-        parts.add(new OrParts(new BasicParts(Valuable.class, 1), new BasicParts(Key.class, 1)));
+        parts.add(new OrParts(new BasicParts(Treasure.class, 1), new BasicParts(Key.class, 1)));
         parts.add(new BasicParts(SunStone.class, 1));
         partsNeed = new MultiParts(parts);
     }
@@ -66,7 +66,7 @@ public class Sceptre extends Buildable {
 
     @Override
     public Buildable build(EntityFactory factory, Inventory inventory) {
-        if (!useParts(inventory)) return null;
+        useParts(inventory);
         return factory.buildSceptre();
     }
 
