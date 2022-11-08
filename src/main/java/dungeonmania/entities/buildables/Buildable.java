@@ -31,7 +31,10 @@ public abstract class Buildable extends Entity implements InventoryItem, BattleI
         return true;
     }
 
-    public abstract boolean isBuildable(Inventory inventory);
+    public boolean isBuildable(Inventory inventory) {
+        return partsNeed.enough(inventory);
+    }
+
     public abstract void logParts();
     public abstract String getType();
 

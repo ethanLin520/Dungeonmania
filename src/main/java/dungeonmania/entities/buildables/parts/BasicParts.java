@@ -23,10 +23,11 @@ public class BasicParts implements Parts {
 
     @Override
     public void use(Inventory inventory) {
-        if (cls.equals(SunStone.class)) return;
         List<? extends InventoryItem> available = inventory.getEntities(cls);
         for (int i = 0; i < num; i++) {
-            inventory.remove(available.get(i));
+            InventoryItem item = available.get(i);
+            if (!(item instanceof SunStone))
+                inventory.remove(item);
         }
     }
 }

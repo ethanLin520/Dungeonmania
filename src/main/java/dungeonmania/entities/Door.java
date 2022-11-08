@@ -3,6 +3,7 @@ package dungeonmania.entities;
 import dungeonmania.map.GameMap;
 
 import dungeonmania.entities.collectables.Key;
+import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.strategy.overlap.DoorOverlap;
@@ -28,6 +29,7 @@ public class Door extends Entity {
 
     public boolean hasKey(Player player) {
         Inventory inventory = player.getInventory();
+        if (inventory.count(SunStone.class) > 0) return true;
         Key key = inventory.getFirst(Key.class);
 
         return (key != null && key.getnumber() == number);

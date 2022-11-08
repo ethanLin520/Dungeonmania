@@ -45,11 +45,6 @@ public class Bow extends Buildable  {
         return durability;
     }
 
-
-    public boolean isBuildable(Inventory inventory) {
-        return partsNeed.enough(inventory);
-    }
-
     @Override
     public void logParts() {
         partsNeed = new AndParts(new BasicParts(Wood.class, 1), new BasicParts(Arrow.class, 3));

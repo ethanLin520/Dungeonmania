@@ -48,23 +48,14 @@ public class Shield extends Buildable {
         return durability;
     }
 
-    public boolean isBuildable(Inventory inventory) {
-        int wood = inventory.count(Wood.class);
-        int keys = inventory.count(Key.class);
-        int treasure = inventory.count(Treasure.class);
-
-        if (wood >= 2 && (treasure >= 1 || keys >= 1)) {
-            return true;
-        }
-
-        return false;
-    }
-
     @Override
     public void logParts() {
         partsNeed = new AndParts(
             new BasicParts(Wood.class, 2),
-            new OrParts(new BasicParts(Valuable.class, 1), new BasicParts(Key.class, 1))
+            new OrParts(
+                new OrParts(new BasicParts(SunStone.class, 1), new BasicParts(Key.class, 1)),
+                new BasicParts(Valuable.class, 1)
+            )
         );
     }
 
