@@ -98,6 +98,10 @@ public class Inventory {
         return weapon;
     }
 
+    public boolean hasSceptre() {
+        return getFirst(Sceptre.class) != null;
+    }
+
     public void setItems(List<InventoryItem> items) {
         this.items = new ArrayList<InventoryItem>(items);
     }

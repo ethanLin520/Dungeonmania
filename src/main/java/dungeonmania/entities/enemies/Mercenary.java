@@ -21,6 +21,8 @@ public class Mercenary extends Enemy implements Interactable {
     private int bribeRadius = Mercenary.DEFAULT_BRIBE_RADIUS;
     private boolean allied = false;
 
+    // private int mindControlStop = 0;
+
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius) {
         super(position, health, attack);
         this.bribeAmount = bribeAmount;
@@ -70,12 +72,14 @@ public class Mercenary extends Enemy implements Interactable {
     @Override
     public void interact(Player player, Game game) {
         allied = true;
-        spendCost(player);
+        if (!player.hasSceptre()) {
+            spendCost(player);
+        }
         setOverlapStrategy(new DefaultOverlap());
     }
 
     @Override
     public boolean isInteractable(Player player) {
-        return !allied && canBeBribed(player);
+        return (!allied && canBeBribed(player)) || player.hasSceptre();
     }
 }
