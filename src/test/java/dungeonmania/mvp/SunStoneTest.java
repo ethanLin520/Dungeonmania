@@ -110,8 +110,8 @@ public class SunStoneTest {
 
     @Test
     @Tag("16-4")
-    @DisplayName("Test anAssassin cannot be bribed with Sun Stone.")
-    public void canBeBribed() {
+    @DisplayName("Test an Assassin cannot be bribed with Sun Stone.")
+    public void cannotBeBribed() {
         DungeonManiaController dmc = new DungeonManiaController();
         DungeonResponse res = dmc.newGame("d_assassinTest_noFail_SunStone", "c_assassinTest_noFail");
         String assId = TestUtils.getEntitiesStream(res, "assassin").findFirst().get().getId();

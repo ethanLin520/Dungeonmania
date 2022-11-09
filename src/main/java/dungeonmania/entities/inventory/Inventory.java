@@ -9,12 +9,14 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.buildables.Buildable;
+import dungeonmania.entities.buildables.MidnightArmour;
+import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.Sword;
 
 public class Inventory {
     private List<InventoryItem> items = new ArrayList<>();
-    public static final List<Buildable> VALID_BUILDABLES = List.of(new Bow(), new Shield());
+    public static final List<Buildable> VALID_BUILDABLES = List.of(new Bow(), new Shield(), new Sceptre(), new MidnightArmour());
 
     public boolean add(InventoryItem item) {
         items.add(item);
@@ -48,7 +50,7 @@ public class Inventory {
      */
     public InventoryItem doBuild(String target, EntityFactory factory) {
         for (Buildable b : VALID_BUILDABLES) {
-            if (b.getType() == target)
+            if (b.getType().equals(target))
                 return b.build(factory, this);
         }
         return null;
@@ -73,6 +75,10 @@ public class Inventory {
         return null;
     }
 
+    public List<InventoryItem> getInventoryItems() {
+        return new ArrayList<InventoryItem>(items);
+    }
+
     public List<Entity> getEntities() {
         return items.stream().map(Entity.class::cast).collect(Collectors.toList());
     }
@@ -92,4 +98,11 @@ public class Inventory {
         return weapon;
     }
 
+    public boolean hasSceptre() {
+        return getFirst(Sceptre.class) != null;
+    }
+
+    public void setItems(List<InventoryItem> items) {
+        this.items = new ArrayList<InventoryItem>(items);
+    }
 }

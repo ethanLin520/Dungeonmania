@@ -53,8 +53,8 @@ public class Shield extends Buildable {
         partsNeed = new AndParts(
             new BasicParts(Wood.class, 2),
             new OrParts(
-                new OrParts(new BasicParts(SunStone.class, 1), new BasicParts(Key.class, 1)),
-                new BasicParts(Valuable.class, 1)
+                new BasicParts(Key.class, 1),
+                new BasicParts(Treasure.class, 1)
             )
         );
     }
@@ -66,7 +66,7 @@ public class Shield extends Buildable {
 
     @Override
     public Buildable build(EntityFactory factory, Inventory inventory) {
-        if (!useParts(inventory)) return null;
+        useParts(inventory);
         return factory.buildShield();
     }
 }

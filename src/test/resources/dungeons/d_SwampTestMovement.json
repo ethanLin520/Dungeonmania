@@ -1,0 +1,26 @@
+{
+    "entities": [
+        {
+            "type" : "player",
+            "x" : 1,
+            "y" : 1
+        },
+        {
+            "type" : "swamp_tile",
+            "x" : 5,
+            "y" : 1,
+            "movement_factor": 3
+        },
+        {
+            "type" : "mercenary",
+            "x" : 6,
+            "y" : 1
+        },
+        {
+            "type": "exit",
+            "x": 2,
+            "y": 2
+        }
+    ],
+    "goal-condition": {"goal": "exit"}
+  }

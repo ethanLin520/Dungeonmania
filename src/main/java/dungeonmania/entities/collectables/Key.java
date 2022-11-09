@@ -14,4 +14,9 @@ public class Key extends Collectable implements Openable{
     public int getKey() {
         return number;
     }
+
+    @Override
+    public boolean interchangeableWithSS() {
+        return true;
+    }
 }

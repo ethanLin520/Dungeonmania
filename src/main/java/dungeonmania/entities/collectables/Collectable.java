@@ -16,4 +16,9 @@ public abstract class Collectable extends Entity implements InventoryItem {
     public boolean canMoveOnto(GameMap map, Entity entity) {
         return true;
     }
+
+    @Override
+    public boolean interchangeableWithSS() {
+        return false;
+    }
 }

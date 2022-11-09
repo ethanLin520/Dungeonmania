@@ -16,6 +16,11 @@ public abstract class Buildable extends Entity implements InventoryItem, BattleI
         logParts();
     }
 
+    @Override
+    public boolean interchangeableWithSS() {
+        return false;
+    }
+
     public boolean enoughParts(Inventory inventory) {
         return partsNeed.enough(inventory);
     }
@@ -26,9 +31,8 @@ public abstract class Buildable extends Entity implements InventoryItem, BattleI
      * @return whether parts is used successfully.
      */
     protected boolean useParts(Inventory inventory) {
-        if (!enoughParts(inventory)) return false;
-        partsNeed.use(inventory);
-        return true;
+        if (!isBuildable(inventory)) return false;
+        return partsNeed.use(inventory);
     }
 
     public boolean isBuildable(Inventory inventory) {
