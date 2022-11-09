@@ -21,4 +21,9 @@ public class EnemyGoal implements Goal {
         if (this.achieved(game)) return "";
         return ":enemies";
     }
+
+    @Override
+    public String goalType() {
+        return "enemies";
+    }
 }

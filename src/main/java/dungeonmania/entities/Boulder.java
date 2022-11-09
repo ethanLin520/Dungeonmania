@@ -10,7 +10,6 @@ public class Boulder extends Entity {
 
     public Boulder(Position position) {
         super(position.asLayer(Entity.CHARACTER_LAYER));
-        setType("boulder");
         setOverlapStrategy(new BoulderOverlap(this));
     }
 

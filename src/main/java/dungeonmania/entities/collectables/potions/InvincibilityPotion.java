@@ -10,7 +10,6 @@ public class InvincibilityPotion extends Potion {
 
     public InvincibilityPotion(Position position, int duration) {
         super(position, duration);
-        setType("invincibility_potion");
     }
 
     @Override

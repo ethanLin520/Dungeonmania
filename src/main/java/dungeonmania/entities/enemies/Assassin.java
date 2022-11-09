@@ -19,7 +19,6 @@ public class Assassin extends Mercenary {
     public Assassin(Position position, double health, double attack, int bribeAmount, int bribeRadius, double rate) {
         super(position, health, attack, bribeAmount, bribeRadius);
         this.rate = rate;
-        setType("assassin");
     }
 
     private boolean success() {

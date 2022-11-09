@@ -10,7 +10,6 @@ public class ZombieToastSpawner extends Spawner implements Interactable {
 
     public ZombieToastSpawner(Position position, int spawnInterval) {
         super(position);
-        setType("zombie_toast_spawner");
     }
 
     @Override

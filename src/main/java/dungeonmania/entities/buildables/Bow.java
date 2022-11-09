@@ -15,7 +15,6 @@ public class Bow extends Buildable  {
     public Bow(int durability) {
         super(null);
         this.durability = durability;
-        setType("bow");
     }
 
     public Bow() {

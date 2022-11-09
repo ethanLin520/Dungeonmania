@@ -15,7 +15,6 @@ public class Switch extends Entity {
 
     public Switch(Position position) {
         super(position.asLayer(Entity.ITEM_LAYER));
-        setType("switch");
         setOverlapStrategy(new SwitchOverlap(this));
         setMovedAwayStrategy(new SwitchMovedAway(this));
     }

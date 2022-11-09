@@ -17,7 +17,6 @@ public class Shield extends Buildable {
         super(null);
         this.durability = durability;
         this.defence = defence;
-        setType("shield");
     }
 
     public Shield() {

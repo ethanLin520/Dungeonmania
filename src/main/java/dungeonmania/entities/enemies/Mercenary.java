@@ -25,7 +25,6 @@ public class Mercenary extends Enemy implements Interactable {
         super(position, health, attack);
         this.bribeAmount = bribeAmount;
         this.bribeRadius = bribeRadius;
-        setType("mercenary");
         setMoveStrategy(new DijkstraMove(this));
     }
 

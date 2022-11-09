@@ -9,14 +9,13 @@ import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.strategy.overlap.DoorOverlap;
 import dungeonmania.util.Position;
 
-public class Door extends Entity {
+public class Door extends Entity implements Openable{
     private boolean open = false;
     private int number;
 
     public Door(Position position, int number) {
         super(position.asLayer(Entity.DOOR_LAYER));
         this.number = number;
-        setType("door");
         setOverlapStrategy(new DoorOverlap(this));
     }
 
@@ -33,7 +32,7 @@ public class Door extends Entity {
         if (inventory.count(SunStone.class) > 0) return true;
         Key key = inventory.getFirst(Key.class);
 
-        return (key != null && key.getnumber() == number);
+        return (key != null && key.getKey() == number);
     }
 
     public boolean isOpen() {
@@ -42,5 +41,9 @@ public class Door extends Entity {
 
     public void open() {
         open = true;
+    }
+
+    public int getKey() {
+        return number;
     }
 }

@@ -29,7 +29,6 @@ public class Bomb extends Collectable {
         super(position);
         state = State.SPAWNED;
         this.radius = radius;
-        setType("bomb");
         setOverlapStrategy(new BombOverlap(this));
     }
 

@@ -18,7 +18,6 @@ public class Spider extends Enemy {
          *  7 S 3       11     S    3/7
          *  6 5 4       B      5    4/6
          */
-        setType("spider");
         setMoveStrategy(new SpiderMove(this, position.getAdjacentPositions()));
     };
 }

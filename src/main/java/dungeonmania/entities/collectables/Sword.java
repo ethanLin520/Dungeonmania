@@ -19,7 +19,6 @@ public class Sword extends Collectable implements BattleItem {
         super(position);
         this.attack = attack;
         this.durability = durability;
-        setType("sword");
     }
 
     @Override

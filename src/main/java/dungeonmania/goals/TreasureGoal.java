@@ -20,4 +20,9 @@ public class TreasureGoal implements Goal {
         if (this.achieved(game)) return "";
         return ":treasure";
     }
+
+    @Override
+    public String goalType() {
+        return "treasure";
+    }
 }

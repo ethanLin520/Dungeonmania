@@ -21,6 +21,7 @@ import dungeonmania.util.Direction;
 public class Game {
     private String id;
     private String name;
+    private String config;
     private Goal goals;
     private GameMap map;
     private Player player;
@@ -178,6 +179,14 @@ public class Game {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getConfig() {
+        return config;
+    }
+
+    public void setConfig(String config) {
+        this.config = config;
     }
 
     public Goal getGoals() {

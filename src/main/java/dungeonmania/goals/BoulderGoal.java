@@ -15,4 +15,9 @@ public class BoulderGoal implements Goal {
         if (this.achieved(game)) return "";
         return ":boulders";
     }
+
+    @Override
+    public String goalType() {
+        return "boulders";
+    }
 }

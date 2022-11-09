@@ -25,7 +25,6 @@ public abstract class Entity {
     private Position previousPosition;
     private Position previousDistinctPosition;
     private Direction facing;
-    private String entityType;
     private String entityId;
 
     private OverlapStrategy overlapStrategy = new DefaultOverlap();
@@ -91,14 +90,6 @@ public abstract class Entity {
 
     public Direction getFacing() {
         return this.facing;
-    }
-
-    public void setType(String type) {
-        this.entityType = type;
-    }
-
-    public String getType() {
-        return this.entityType;
     }
 
     public void move(Game game) {
