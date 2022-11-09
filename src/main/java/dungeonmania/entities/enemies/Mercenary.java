@@ -5,6 +5,7 @@ import java.util.List;
 import dungeonmania.Game;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.strategy.move.AlliedMove;
 import dungeonmania.entities.strategy.move.DijkstraMove;
@@ -21,7 +22,7 @@ public class Mercenary extends Enemy implements Interactable {
     private int bribeRadius = Mercenary.DEFAULT_BRIBE_RADIUS;
     private boolean allied = false;
 
-    // private int mindControlStop = 0;
+    private int mindControlStop = 0;
 
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius) {
         super(position, health, attack);
@@ -55,6 +56,11 @@ public class Mercenary extends Enemy implements Interactable {
 
     @Override
     public void move(Game game) {
+        if (game.getTick() == mindControlStop) {
+            allied = false;
+            setMoveStrategy(new DijkstraMove(this));
+        }
+
         if (getMoveStrategy() instanceof DijkstraMove) {
             Position playerPos = game.getMap().getPlayer().getPosition();
             List<Position> cardinally = playerPos.getCardinallyAdjacentPositions();
@@ -72,7 +78,9 @@ public class Mercenary extends Enemy implements Interactable {
     @Override
     public void interact(Player player, Game game) {
         allied = true;
-        if (!player.hasSceptre()) {
+        if (player.hasSceptre()) {
+            mindControlStop = game.getTick() + player.getFirst(Sceptre.class).getControlDuration();
+        } else {
             spendCost(player);
         }
         setOverlapStrategy(new DefaultOverlap());

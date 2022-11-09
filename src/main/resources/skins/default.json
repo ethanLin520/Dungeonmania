@@ -45,6 +45,7 @@
         "boulders": "images/tileset/entities/boulder_00.png",
         "enemies": "images/tileset/items/sword_silver.png",
         "sun_stone": "images/tileset/entities/sun_stone.png",
-        "assassin": "images/tileset/entities/assassin.png"
+        "assassin": "images/tileset/entities/assassin.png",
+        "sceptre": "images/tileset/entities/sceptre.png"
     }
 }

@@ -55,6 +55,10 @@ public class Player extends Entity implements Battleable {
         return inventory.hasSceptre();
     }
 
+    public <T extends InventoryItem> T getFirst(Class<T> type) {
+        return inventory.getFirst(type);
+    }
+
     public List<String> getBuildables() {
         return inventory.getBuildables();
     }

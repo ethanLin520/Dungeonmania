@@ -150,4 +150,68 @@ public class SceptreTest {
         // SS retains
         assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
     }
+
+    @Test
+    @Tag("17-5")
+    @DisplayName("Test Sceptre can do mind control and mind control effect disappears")
+    public void sceptreMindControl() {
+        /*
+         * P (1,1)                                            M (15,1)
+         * P -> 4 step + 1 build + 1 interact       6 step <- M
+         * P (5,1)                                            M (9,1)
+         *
+         * P -> 2 step -> (7,1)                     1 step & move to P'prev pos @ (6,1)
+         */
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_MindControlTest", "c_MindControlTest");
+
+        String mercId = TestUtils.getEntitiesStream(res, "mercenary").findFirst().get().getId();
+
+        assertEquals(0, TestUtils.getInventory(res, "arrow").size());
+        assertEquals(0, TestUtils.getInventory(res, "sun_stone").size());
+
+        // Pick up Arrows
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(2, TestUtils.getInventory(res, "arrow").size());
+
+        // Pick up SS
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        assertEquals(2, TestUtils.getInventory(res, "sun_stone").size());
+
+        // Build Sceptre
+        assertEquals(0, TestUtils.getInventory(res, "sceptre").size());
+        res = assertDoesNotThrow(() -> dmc.build("sceptre"));
+        assertEquals(1, TestUtils.getInventory(res, "sceptre").size());
+
+        // Materials used in construction disappear from inventory
+        assertEquals(0, TestUtils.getInventory(res, "arrow").size());
+        // SS retains
+        assertEquals(1, TestUtils.getInventory(res, "sun_stone").size());
+
+        // Mind Control
+        res = assertDoesNotThrow(() -> dmc.interact(mercId));
+
+        // -> 2 step
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        // No Battle
+        assertEquals(0, res.getBattles().size());
+
+        // -> 4 step
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        res = dmc.tick(Direction.RIGHT);
+        // No Battle
+        assertEquals(0, res.getBattles().size());
+
+        // Go back and battle
+        res = dmc.tick(Direction.LEFT);
+        res = dmc.tick(Direction.LEFT);
+
+        // Battle
+        assertNotEquals(0, res.getBattles().size());
+    }
 }

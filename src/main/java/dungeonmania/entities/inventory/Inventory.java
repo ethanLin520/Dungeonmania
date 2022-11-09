@@ -50,7 +50,7 @@ public class Inventory {
      */
     public InventoryItem doBuild(String target, EntityFactory factory) {
         for (Buildable b : VALID_BUILDABLES) {
-            if (b.getType() == target)
+            if (b.getType().equals(target))
                 return b.build(factory, this);
         }
         return null;
