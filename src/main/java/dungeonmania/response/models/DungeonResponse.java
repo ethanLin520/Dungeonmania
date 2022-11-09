@@ -3,10 +3,6 @@ package dungeonmania.response.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import dungeonmania.Game;
-import dungeonmania.entities.Entity;
-import dungeonmania.map.GameMap;
-import dungeonmania.response.*;;
 public final class DungeonResponse {
     private final String dungeonId;
     private final String dungeonName;

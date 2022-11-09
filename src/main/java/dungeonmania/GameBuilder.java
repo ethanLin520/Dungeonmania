@@ -13,7 +13,6 @@ import dungeonmania.map.GameMap;
 import dungeonmania.map.GraphNode;
 import dungeonmania.map.GraphNodeFactory;
 import dungeonmania.util.FileLoader;
-import dungeonmania.util.GameSaver;
 
 /**
  * GameBuilder -- A builder to build up the whole game

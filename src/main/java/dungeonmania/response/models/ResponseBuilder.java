@@ -6,12 +6,9 @@ import java.util.stream.Collectors;
 
 import dungeonmania.Game;
 import dungeonmania.battles.BattleRound;
-import dungeonmania.entities.Door;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Openable;
-import dungeonmania.entities.collectables.Key;
-import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.util.NameConverter;
 
