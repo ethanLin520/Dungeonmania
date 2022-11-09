@@ -20,19 +20,27 @@ import dungeonmania.util.FileLoader;
  * @author      Tina Ji
  */
 public class GameBuilder {
-    private String configName;
+    private String configFile;
+    private String dungeonFile;
     private String dungeonName;
 
     private JSONObject config;
     private JSONObject dungeon;
 
     public GameBuilder setConfigName(String configName) {
-        this.configName = configName;
+        this.configFile = String.format("/configs/%s.json", configName);
         return this;
     }
 
     public GameBuilder setDungeonName(String dungeonName) {
         this.dungeonName = dungeonName;
+        this.dungeonFile = String.format("/dungeons/%s.json", dungeonName);
+        return this;
+    }
+
+    public GameBuilder setSaveDungeonName(String saveName) {
+        this.dungeonName = saveName;
+        this.dungeonFile = String.format("/saves/%s/%s.json", saveName, saveName);
         return this;
     }
 
@@ -49,12 +57,11 @@ public class GameBuilder {
         buildMap(game);
         buildGoals(game);
         game.init();
-
+        
         return game;
     }
 
     private void loadConfig() {
-        String configFile = String.format("/configs/%s.json", configName);
         try {
             config = new JSONObject(FileLoader.loadResourceFile(configFile));
         } catch (IOException e) {
@@ -64,7 +71,6 @@ public class GameBuilder {
     }
 
     private void loadDungeon() {
-        String dungeonFile = String.format("/dungeons/%s.json", dungeonName);
         try {
             dungeon = new JSONObject(FileLoader.loadResourceFile(dungeonFile));
         } catch (IOException e) {

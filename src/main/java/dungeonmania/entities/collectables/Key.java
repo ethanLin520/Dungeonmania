@@ -1,8 +1,9 @@
 package dungeonmania.entities.collectables;
 
+import dungeonmania.entities.Openable;
 import dungeonmania.util.Position;
 
-public class Key extends Collectable {
+public class Key extends Collectable implements Openable{
     private int number;
 
     public Key(Position position, int number) {
@@ -10,7 +11,7 @@ public class Key extends Collectable {
         this.number = number;
     }
 
-    public int getnumber() {
+    public int getKey() {
         return number;
     }
 

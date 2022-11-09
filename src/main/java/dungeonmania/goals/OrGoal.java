@@ -1,8 +1,10 @@
 package dungeonmania.goals;
 
+import java.util.List;
+
 import dungeonmania.Game;
 
-public class OrGoal implements Goal {
+public class OrGoal implements Goal, ComplexGoal {
     private Goal goal1;
     private Goal goal2;
 
@@ -20,5 +22,15 @@ public class OrGoal implements Goal {
     public String toString(Game game) {
         if (this.achieved(game)) return "";
         return "(" + goal1.toString(game) + " OR " + goal2.toString(game) + ")";
+    }
+
+    @Override
+    public String goalType() {
+        return "OR";
+    }
+
+    @Override
+    public List<Goal> getSubgoal() {
+        return List.of(goal1, goal2);
     }
 }

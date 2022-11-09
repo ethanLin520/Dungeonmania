@@ -27,4 +27,9 @@ public class ExitGoal implements Goal {
         if (this.achieved(game)) return "";
         return ":exit";
     }
+
+    @Override
+    public String goalType() {
+        return "exit";
+    }
 }
