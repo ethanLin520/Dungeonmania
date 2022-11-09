@@ -7,19 +7,19 @@
         },
         {
             "type" : "swamp_tile",
-            "x" : 5,
+            "x" : 7,
             "y" : 1,
-            "movement_factor": 3
+            "movement_factor": 5
         },
         {
             "type" : "mercenary",
-            "x" : 6,
+            "x" : 8,
             "y" : 1
         },
         {
             "type": "exit",
             "x": 2,
-            "y": 2
+            "y": 10
         }
     ],
     "goal-condition": {"goal": "exit"}
