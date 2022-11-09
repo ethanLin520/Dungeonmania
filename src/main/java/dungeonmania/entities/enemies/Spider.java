@@ -19,5 +19,10 @@ public class Spider extends Enemy {
          *  6 5 4       B      5    4/6
          */
         setMoveStrategy(new SpiderMove(this, position.getAdjacentPositions()));
+    }
+
+    @Override
+    public boolean isAllied() {
+        return false;
     };
 }

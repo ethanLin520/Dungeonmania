@@ -11,4 +11,9 @@ public class ZombieToast extends Enemy {
         super(position, health, attack);
         setMoveStrategy(new RandomMove(this));
     }
+
+    @Override
+    public boolean isAllied() {
+        return false;
+    }
 }

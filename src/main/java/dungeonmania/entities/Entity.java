@@ -5,6 +5,7 @@ import dungeonmania.entities.strategy.destroy.DefaultDestroy;
 import dungeonmania.entities.strategy.destroy.DestroyStrategy;
 import dungeonmania.entities.strategy.move.DefaultMove;
 import dungeonmania.entities.strategy.move.MoveStrategy;
+import dungeonmania.entities.strategy.move.SwampMove;
 import dungeonmania.entities.strategy.movedaway.DefaultMovedAway;
 import dungeonmania.entities.strategy.movedaway.MovedAwayStrategy;
 import dungeonmania.entities.strategy.overlap.DefaultOverlap;
@@ -116,4 +117,20 @@ public abstract class Entity {
         return this.moveStrategy;
     }
 
+    /**
+     * Called when an entity move onto a swamp tile.
+     * Sets the entity's move strategy to SwampMove.
+     * @param nextMovingTick - next tick the entity can move off the swamp
+     */
+    public void onSwamp(int nextMovingTick) {
+        setMoveStrategy(new SwampMove(this, nextMovingTick, getMoveStrategy()));
+    }
+
+    /**
+     * Called when an entity moves off a swamp tile.
+     * @param original - original move strategy before moving onto the swamp tile.
+     */
+    public void onMovedAwaySwamp(MoveStrategy original) {
+        setMoveStrategy(original);
+    }
 }

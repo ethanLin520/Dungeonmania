@@ -2,7 +2,6 @@ package dungeonmania.entities;
 
 import dungeonmania.Game;
 import dungeonmania.entities.buildables.Bow;
-import dungeonmania.entities.buildables.Buildable;
 import dungeonmania.entities.buildables.MidnightArmour;
 import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.buildables.Shield;
@@ -131,7 +130,7 @@ public class EntityFactory {
         return new Sceptre(duration);
     }
 
-    public Buildable buildMidnighArmour() {
+    public MidnightArmour buildMidnighArmour() {
         double extraAttack = config.optDouble("midnight_armour_attack");
         double extraDefence = config.optDouble("midnight_armour_defence");
         return new MidnightArmour(extraAttack, extraDefence);
@@ -191,6 +190,8 @@ public class EntityFactory {
             return buildAssassin(pos);
         case "sun_stone":
             return new SunStone(pos);
+        case "swamp_tile":
+            return new Swamp(pos, jsonEntity.getInt("movement_factor"));
 
         default:
             return null;
