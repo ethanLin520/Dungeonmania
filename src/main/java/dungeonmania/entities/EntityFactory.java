@@ -155,8 +155,10 @@ public class EntityFactory {
     }
 
     private Entity constructEntity(JSONObject jsonEntity, JSONObject config) {
-        Position pos = new Position(jsonEntity.getInt("x"), jsonEntity.getInt("y"));
-        System.out.println("### " + jsonEntity.getString("type"));
+        Position pos = null;
+        if (jsonEntity.has("x") && jsonEntity.has("y")) {
+            pos = new Position(jsonEntity.getInt("x"), jsonEntity.getInt("y"));
+        }
 
         Entity newEntity = null;
         switch (jsonEntity.getString("type")) {
@@ -220,7 +222,7 @@ public class EntityFactory {
             setMercenaryMove(jsonEntity, a);
             newEntity = a; break;
         case "sun_stone":
-            newEntity = new SunStone(pos);
+            newEntity = new SunStone(pos); break;
         case "swamp_tile":
             newEntity = new SwampTile(pos, jsonEntity.getInt("movement_factor")); break;
         case "time_turner":
@@ -257,7 +259,6 @@ public class EntityFactory {
             }
         }
     
-        System.out.println("Creating " + jsonEntity.getString("type") + " at position: " + jsonEntity.getInt("x") + " " + jsonEntity.getInt("y"));
         return newEntity;
     }
 }

@@ -10,8 +10,6 @@ public class InventoryJson extends DefaultJson {
 
     public JSONObject apply() {
         JSONObject json = super.apply();
-        json.put("x",getEntity().getPosition().getX());
-        json.put("y",getEntity().getPosition().getY());
         return json;
     }
 }
