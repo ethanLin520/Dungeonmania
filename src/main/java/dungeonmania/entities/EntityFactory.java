@@ -246,19 +246,19 @@ public class EntityFactory {
         case "midnightarmour":
             newEntity = buildMidnighArmour(); break;
         }
-        
+
         if (newEntity != null) {
             if (jsonEntity.has("entity-id")) {
                 newEntity.setId(jsonEntity.getString("entity-id"));
             }
             if (jsonEntity.has("stat")) {
                 BattleStatistics stat = new BattleStatistics(jsonEntity.getJSONObject("stat"));
-                Battleable battleable = (Battleable) newEntity; 
+                Battleable battleable = (Battleable) newEntity;
                 battleable.setBattleStatistics(stat);
                 newEntity = (Entity) battleable;
             }
         }
-    
+
         return newEntity;
     }
 }

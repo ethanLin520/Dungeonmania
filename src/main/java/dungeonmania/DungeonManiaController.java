@@ -165,7 +165,10 @@ public class DungeonManiaController {
      * /game/rewind
      */
     public DungeonResponse rewind(int ticks) throws IllegalArgumentException {
-        return null;
+        if (ticks <= 0) {
+            throw new IllegalArgumentException("Input <tick> must be greater than 0!");
+        }
+        return ResponseBuilder.getDungeonResponse(game.rewindGame(ticks));
     }
 
 }
