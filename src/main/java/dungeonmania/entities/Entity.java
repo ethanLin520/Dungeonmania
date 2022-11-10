@@ -77,6 +77,10 @@ public abstract class Entity {
         return entityId;
     }
 
+    public void setId(String entityId) {
+        this.entityId = entityId;
+    }
+
     public void setPosition(Position position) {
         previousPosition = this.position;
         this.position = position;

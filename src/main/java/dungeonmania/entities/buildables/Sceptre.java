@@ -30,6 +30,9 @@ public class Sceptre extends Buildable {
         this.controlDuration = 0;
     }
 
+    public void setDurability(int durability) {
+    }
+
     @Override
     public BattleStatistics applyBuff(BattleStatistics origin) {
         return BattleStatistics.applyBuff(origin, new BattleStatistics(

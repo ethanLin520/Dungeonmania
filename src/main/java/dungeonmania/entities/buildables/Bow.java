@@ -22,6 +22,10 @@ public class Bow extends Buildable  {
         this.durability = 0;
     }
 
+    public void setDurability(int durability) {
+        this.durability = durability;
+    }
+    
     @Override
     public void use(Game game) {
         durability--;

@@ -12,6 +12,7 @@ import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.entities.playerState.BaseState;
 import dungeonmania.entities.playerState.PlayerState;
+import dungeonmania.entities.strategy.json.BattleableJson;
 import dungeonmania.entities.strategy.move.PlayerMove;
 import dungeonmania.entities.strategy.overlap.PlayerOverlap;
 import dungeonmania.map.GameMap;
@@ -41,6 +42,7 @@ public class Player extends Entity implements Battleable {
         state = new BaseState();
         setOverlapStrategy(new PlayerOverlap(this));
         setMoveStrategy(new PlayerMove(this));
+        setJsonStrategy(new BattleableJson(this));
     }
 
     public boolean hasWeapon() {
@@ -53,6 +55,22 @@ public class Player extends Entity implements Battleable {
 
     public boolean hasSceptre() {
         return inventory.hasSceptre();
+    }
+
+    public void setPotionQueue(Queue<Potion> queue) {
+        this.potionQueue = queue;
+    }
+
+    public Queue<Potion> getPotionQueue() {
+        return potionQueue;
+    }
+
+    public int getNextTrigger() {
+        return nextTrigger;
+    }
+    
+    public void setNextTrigger(int nextTrigger) {
+        this.nextTrigger = nextTrigger;
     }
 
     public <T extends InventoryItem> T getFirst(Class<T> type) {
@@ -97,6 +115,10 @@ public class Player extends Entity implements Battleable {
 
     public Potion getEffectivePotion() {
         return inEffective;
+    }
+
+    public void setEffectivePotion(Potion inEffective) {
+        this.inEffective = inEffective;
     }
 
     public <T extends InventoryItem> void use(Class<T> itemType) {

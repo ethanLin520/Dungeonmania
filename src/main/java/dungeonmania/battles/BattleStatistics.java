@@ -3,6 +3,8 @@ package dungeonmania.battles;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 public class BattleStatistics {
     public static final double DEFAULT_DAMAGE_MAGNIFIER = 1.0;
     public static final double DEFAULT_PLAYER_DAMAGE_REDUCER = 10.0;
@@ -46,6 +48,16 @@ public class BattleStatistics {
         this.reducer = damageReducer;
         this.invincible = isInvincible;
         this.enabled = isEnabled;
+    }
+
+    public BattleStatistics(JSONObject stat) {
+        this.health = stat.getDouble("health");
+        this.attack = stat.getDouble("attack");
+        this.defence = stat.getDouble("defence");
+        this.magnifier = stat.getDouble("magnifier");
+        this.reducer = stat.getDouble("reducer");
+        this.invincible = stat.getBoolean("invincible");
+        this.enabled = stat.getBoolean("enabled");
     }
 
     public static List<BattleRound> battle(BattleStatistics self, BattleStatistics target) {

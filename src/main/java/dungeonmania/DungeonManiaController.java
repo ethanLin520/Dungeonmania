@@ -57,6 +57,7 @@ public class DungeonManiaController {
      * /game/new
      */
     public DungeonResponse newGame(String dungeonName, String configName) throws IllegalArgumentException {
+        System.out.println("Creating new game: " + dungeonName + " with config file: " + configName);
         if (!dungeons().contains(dungeonName)) {
             throw new IllegalArgumentException(dungeonName + " is not a dungeon that exists");
         }
