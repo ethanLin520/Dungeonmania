@@ -11,12 +11,9 @@ import org.json.JSONObject;
 
 
 import dungeonmania.Game;
+import dungeonmania.entities.Entity;
 import dungeonmania.goals.ComplexGoal;
 import dungeonmania.goals.Goal;
-import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
-import dungeonmania.response.models.ResponseBuilder;
-
 
 public class GameSaver {
     private static final String SAVE_PATH = "src/main/resources/saves";
@@ -80,18 +77,6 @@ public class GameSaver {
         return o;
     }
 
-    private static JSONObject createEntityJson(EntityResponse e) {
-        JSONObject entity = new JSONObject();
-        entity.put("type", e.getType());
-        entity.put("x", e.getPosition().getX());
-        entity.put("y", e.getPosition().getY());
-        if (e.getType().equals("door") || e.getType().equals("key")) {
-            entity.put("key", e.getKey());
-        }
-
-        return entity;
-    }
-
     private static JSONObject createGoalJson(Goal goal) {
         JSONObject json = new JSONObject();
         json.put("goal", goal.goalType());
@@ -134,11 +119,9 @@ public class GameSaver {
     }
     
     private static JSONObject gameToJson(Game game) {
-        DungeonResponse rsp = ResponseBuilder.getDungeonResponse(game);
-
         JSONArray entities = new JSONArray();
-        for (EntityResponse e : rsp.getEntities()) {
-            entities.put(createEntityJson(e));
+        for (Entity e : game.getMap().getEntities()) {
+            entities.put(e.toJson());
         }
         JSONObject goalCondition = createGoalJson(game.getGoals());
 
@@ -211,7 +194,7 @@ public class GameSaver {
             String jsonPath = saveName + "/" + saveName + ".json";
             // Save Goals and Entities
             if (!saveJsonFile(jsonPath, gameToJson(game))) {
-                throw new IllegalArgumentException("Can't save game to path:" + SAVE_PATH + path);
+                throw new IllegalArgumentException("Can't save game to path: " + SAVE_PATH + path);
             }
             // Save Inventory
             // Save Battle Facade

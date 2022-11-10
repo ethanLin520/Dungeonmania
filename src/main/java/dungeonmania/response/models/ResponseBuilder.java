@@ -8,7 +8,6 @@ import dungeonmania.Game;
 import dungeonmania.battles.BattleRound;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Interactable;
-import dungeonmania.entities.Openable;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.util.NameConverter;
 
@@ -41,18 +40,11 @@ public class ResponseBuilder {
     }
 
     public static EntityResponse getEntityResponse(Game game, Entity entity) {
-        EntityResponse rsp =  new EntityResponse(
+        return new EntityResponse(
             entity.getId(),
             NameConverter.toSnakeCase(entity),
             entity.getPosition(),
             (entity instanceof Interactable) && ((Interactable) entity).isInteractable(game.getPlayer()));
-
-        if (entity instanceof Openable) {
-            Openable e = (Openable) entity;
-            rsp.setKey(e.getKey());
-        }
-
-        return rsp;
     }
 
     public static RoundResponse getRoundResponse(BattleRound round) {

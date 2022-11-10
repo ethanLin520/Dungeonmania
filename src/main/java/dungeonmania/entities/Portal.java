@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import dungeonmania.entities.enemies.Mercenary;
+import dungeonmania.entities.strategy.json.PortalJson;
 import dungeonmania.entities.strategy.overlap.PortalOverlap;
 import dungeonmania.map.GameMap;
 import dungeonmania.util.Position;
@@ -16,6 +17,7 @@ public class Portal extends Entity {
         super(position);
         this.color = color;
         setOverlapStrategy(new PortalOverlap(this));
+        setJsonStrategy(new PortalJson(this));
     }
 
     @Override

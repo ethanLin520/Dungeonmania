@@ -6,6 +6,7 @@ import dungeonmania.entities.collectables.Key;
 import dungeonmania.entities.collectables.SunStone;
 import dungeonmania.entities.enemies.Spider;
 import dungeonmania.entities.inventory.Inventory;
+import dungeonmania.entities.strategy.json.OpenableJson;
 import dungeonmania.entities.strategy.overlap.DoorOverlap;
 import dungeonmania.util.Position;
 
@@ -17,6 +18,7 @@ public class Door extends Entity implements Openable{
         super(position.asLayer(Entity.DOOR_LAYER));
         this.number = number;
         setOverlapStrategy(new DoorOverlap(this));
+        setJsonStrategy(new OpenableJson(this));
     }
 
     @Override
