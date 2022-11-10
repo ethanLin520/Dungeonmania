@@ -140,7 +140,7 @@ public class EntityFactory {
 
     private Entity constructEntity(JSONObject jsonEntity, JSONObject config) {
         Position pos = new Position(jsonEntity.getInt("x"), jsonEntity.getInt("y"));
-
+        System.out.println("Creating " + jsonEntity.getString("type") + " at position: " + jsonEntity.getInt("x") + " " + jsonEntity.getInt("y"));
         switch (jsonEntity.getString("type")) {
         case "player":
             return buildPlayer(pos);
