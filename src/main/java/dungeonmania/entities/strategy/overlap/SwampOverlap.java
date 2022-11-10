@@ -2,14 +2,14 @@ package dungeonmania.entities.strategy.overlap;
 
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
-import dungeonmania.entities.Swamp;
+import dungeonmania.entities.SwampTile;
 import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.map.GameMap;
 
 public class SwampOverlap implements OverlapStrategy {
-    private Swamp swamp;
+    private SwampTile swamp;
 
-    public SwampOverlap(Swamp swamp) {
+    public SwampOverlap(SwampTile swamp) {
         this.swamp = swamp;
     }
 

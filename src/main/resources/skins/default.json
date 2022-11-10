@@ -47,6 +47,6 @@
         "sun_stone": "images/tileset/entities/sun_stone.png",
         "assassin": "images/tileset/entities/assassin.png",
         "sceptre": "images/tileset/entities/sceptre.png",
-        "swamp_tile": "images/tileset/swamp_tile.png"
+        "swamp_tile": "images/tileset/entities/swamp_tile.png"
     }
 }
