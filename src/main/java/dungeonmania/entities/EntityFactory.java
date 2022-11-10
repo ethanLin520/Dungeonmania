@@ -8,6 +8,8 @@ import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.enemies.*;
 import dungeonmania.entities.enemies.Spawners.ZombieToastSpawner;
+import dungeonmania.entities.time.TimeTravellingPortal;
+import dungeonmania.entities.time.TimeTurner;
 import dungeonmania.map.GameMap;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
@@ -192,7 +194,10 @@ public class EntityFactory {
             return new SunStone(pos);
         case "swamp_tile":
             return new SwampTile(pos, jsonEntity.getInt("movement_factor"));
-
+        case "time_turner":
+            return new TimeTurner(pos);
+        case "time_travelling_portal":
+            return new TimeTravellingPortal(pos);
         default:
             return null;
         }
