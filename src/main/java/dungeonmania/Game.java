@@ -248,4 +248,8 @@ public class Game {
     public void collectOneValuable() {
         valuableCollect++;
     }
+
+    public Game rewindGame(int tick) {
+        return this;
+    }
 }

@@ -166,7 +166,7 @@ public class App implements SparkApplication {
             return callUsingSessionAndArgument(request, (dmc) -> dmc.allGames());
         }, gson::toJson);
 
-        Spark.post("api/game/load", "application/json", (request, response) -> {
+        Spark.post("/api/game/rewind/", "application/json", (request, response) -> {
             try {
                 return callUsingSessionAndArgument(request, (dmc) -> dmc.rewind(Integer.parseInt(request.queryParams("ticks"))));
             } catch (NumberFormatException e) {
