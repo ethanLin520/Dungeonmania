@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dungeonmania.entities.collectables.Bomb;
+import dungeonmania.entities.strategy.json.SwitchJson;
 import dungeonmania.entities.strategy.movedaway.SwitchMovedAway;
 import dungeonmania.entities.strategy.overlap.SwitchOverlap;
 import dungeonmania.map.GameMap;
@@ -17,6 +18,7 @@ public class Switch extends Entity {
         super(position.asLayer(Entity.ITEM_LAYER));
         setOverlapStrategy(new SwitchOverlap(this));
         setMovedAwayStrategy(new SwitchMovedAway(this));
+        setJsonStrategy(new SwitchJson(this));
     }
 
     public void subscribe(Bomb b) {
@@ -41,6 +43,10 @@ public class Switch extends Entity {
 
     public boolean isActivated() {
         return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 
     /**

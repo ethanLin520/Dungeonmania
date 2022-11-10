@@ -15,6 +15,7 @@ public class DefaultJson implements JsonStrategy{
     public JSONObject apply() {
         JSONObject json = new JSONObject();
         json.put("type", NameConverter.toSnakeCase(entity));
+        json.put("entity-id", entity.getId());
         json.put("x", entity.getPosition().getX());
         json.put("y", entity.getPosition().getY());
         return json;

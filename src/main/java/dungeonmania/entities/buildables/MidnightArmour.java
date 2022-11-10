@@ -25,6 +25,9 @@ public class MidnightArmour extends Buildable {
         this.extraDefence = 0;
     }
 
+    public void setDurability(int durability) {
+    }
+
     @Override
     public BattleStatistics applyBuff(BattleStatistics origin) {
         return BattleStatistics.applyBuff(origin, new BattleStatistics(

@@ -23,6 +23,10 @@ public class Sword extends Collectable implements BattleItem {
         setJsonStrategy(new BattleJson(this));
     }
 
+    public void setDurability(int durability) {
+        this.durability = durability;
+    }
+    
     @Override
     public void use(Game game) {
         durability--;

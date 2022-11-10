@@ -10,4 +10,5 @@ public interface BattleItem {
     public BattleStatistics applyBuff(BattleStatistics origin);
     public void use(Game game);
     public int getDurability();
+    public void setDurability(int durability);
 }

@@ -12,6 +12,7 @@ import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.entities.playerState.BaseState;
 import dungeonmania.entities.playerState.PlayerState;
+import dungeonmania.entities.strategy.json.BattleableJson;
 import dungeonmania.entities.strategy.move.PlayerMove;
 import dungeonmania.entities.strategy.overlap.PlayerOverlap;
 import dungeonmania.map.GameMap;
@@ -41,6 +42,7 @@ public class Player extends Entity implements Battleable {
         state = new BaseState();
         setOverlapStrategy(new PlayerOverlap(this));
         setMoveStrategy(new PlayerMove(this));
+        setJsonStrategy(new BattleableJson(this));
     }
 
     public boolean hasWeapon() {
