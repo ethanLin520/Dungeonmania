@@ -168,7 +168,7 @@ public class DungeonManiaController {
         if (ticks <= 0) {
             throw new IllegalArgumentException("Input <tick> must be greater than 0!");
         }
-        return ResponseBuilder.getDungeonResponse(game.rewindGame(ticks));
+        return ResponseBuilder.getDungeonResponse(game.rewindGame(ticks, true));
     }
 
 }

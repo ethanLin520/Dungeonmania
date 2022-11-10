@@ -18,6 +18,7 @@ import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.time.OlderPlayer;
 import dungeonmania.entities.time.PastGame;
+import dungeonmania.entities.time.TimeTurner;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goals.Goal;
 import dungeonmania.map.GameMap;
@@ -283,7 +284,8 @@ public class Game {
         valuableCollect++;
     }
 
-    public Game rewindGame(int tick) {
+    public Game rewindGame(int tick, boolean turner) {
+        if (turner && player.getInventory().getEntities(TimeTurner.class).size() < 1) throw new IllegalArgumentException("No Time Turner!");
         int targetTime = tickCount > tick ? tickCount - tick : 0;
         mapBuilder(pastGames.get(targetTime));
         return this;

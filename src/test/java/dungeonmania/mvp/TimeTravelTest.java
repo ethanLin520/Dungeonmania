@@ -35,6 +35,9 @@ public class TimeTravelTest {
         assertEquals(3, TestUtils.getEntities(res, "treasure").size());
         assertEquals(1, TestUtils.getEntities(res, "time_turner").size());
 
+        // Inventory
+        assertEquals(3, TestUtils.getInventory(res, "treasure").size());
+
         // Og player
         assertEquals(new Position(2, 1), TestUtils.getEntities(res, "older_player").get(0).getPosition());
 
@@ -87,6 +90,37 @@ public class TimeTravelTest {
         res = dmc.tick(Direction.LEFT);
         // battle w/ og player
         assertNotEquals(0, res.getBattles().size());
+
+        // Og player gone
+        assertEquals(0, TestUtils.getEntities(res, "older_player").size());
+    }
+    @Test
+    @Tag("19-3")
+    @DisplayName("Test Time Travel Portal")
+    public void basicTimeTravelPortal() {
+        DungeonManiaController dmc;
+        dmc = new DungeonManiaController();
+        DungeonResponse res = dmc.newGame("d_TTT_portal", "c_TTT");
+
+        assertEquals(1, TestUtils.getEntities(res, "time_travelling_portal").size());
+
+        for (int i = 0; i < 30; i++) {
+            res = dmc.tick(Direction.RIGHT);
+        }
+
+        // Og player
+        assertEquals(new Position(1, 1), TestUtils.getEntities(res, "older_player").get(0).getPosition());
+
+        for (int i = 0; i < 10; i++) {
+            res = dmc.tick(Direction.DOWN);
+        }
+
+        // Og player
+        assertEquals(new Position(11, 1), TestUtils.getEntities(res, "older_player").get(0).getPosition());
+
+        for (int i = 0; i < 20; i++) {
+            res = dmc.tick(Direction.DOWN);
+        }
 
         // Og player gone
         assertEquals(0, TestUtils.getEntities(res, "older_player").size());

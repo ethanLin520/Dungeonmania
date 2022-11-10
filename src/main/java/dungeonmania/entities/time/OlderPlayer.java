@@ -12,7 +12,7 @@ import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.strategy.move.OlderPlayerMove;
 import dungeonmania.util.Position;
 
-public class OlderPlayer extends Enemy implements TimeTravel {
+public class OlderPlayer extends Enemy {
     private Map<Integer, Potion> potionTimeTable = new HashMap<>();
     private Potion inEffective = null;
     private List<Position> playerRoute = new ArrayList<>();
