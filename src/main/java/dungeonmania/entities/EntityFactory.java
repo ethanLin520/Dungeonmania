@@ -8,12 +8,15 @@ import dungeonmania.entities.buildables.Shield;
 import dungeonmania.entities.collectables.*;
 import dungeonmania.entities.enemies.*;
 import dungeonmania.entities.enemies.Spawners.ZombieToastSpawner;
+import dungeonmania.entities.strategy.move.AlliedMove;
+import dungeonmania.entities.strategy.overlap.DefaultOverlap;
 import dungeonmania.entities.time.TimeTravellingPortal;
 import dungeonmania.entities.time.TimeTurner;
 import dungeonmania.map.GameMap;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 import dungeonmania.util.Position;
+import javassist.bytecode.stackmap.BasicBlock.Catch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,7 +152,18 @@ public class EntityFactory {
         case "zombie_toast_spawner":
             return buildZombieToastSpawner(pos);
         case "mercenary":
-            return buildMercenary(pos);
+            Mercenary m = buildMercenary(pos);
+
+            if (jsonEntity.has("allied") && jsonEntity.has("mind_control_stop")) {
+                m.setMindControlStop(jsonEntity.getInt("mind_control_stop"));
+                m.setAllied(jsonEntity.getBoolean("allied"));
+                if (m.isAllied()) {
+                    m.setMoveStrategy(new AlliedMove(m));
+                    m.setOverlapStrategy(new DefaultOverlap());
+                }
+            }
+
+            return m;
         case "wall":
             return new Wall(pos);
         case "boulder":
@@ -189,7 +203,18 @@ public class EntityFactory {
         case "key":
             return new Key(pos, jsonEntity.getInt("key"));
         case "assassin":
-            return buildAssassin(pos);
+            Assassin a = buildAssassin(pos);
+
+            if (jsonEntity.has("allied") && jsonEntity.has("mind_control_stop")) {
+                a.setMindControlStop(jsonEntity.getInt("mind_control_stop"));
+                a.setAllied(jsonEntity.getBoolean("allied"));
+                if (a.isAllied()) {
+                    a.setMoveStrategy(new AlliedMove(a));
+                    a.setOverlapStrategy(new DefaultOverlap());
+                }
+            }
+
+            return a;
         case "sun_stone":
             return new SunStone(pos);
         case "swamp_tile":

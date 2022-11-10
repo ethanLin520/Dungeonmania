@@ -30,6 +30,7 @@ public class GameSaver {
     public GameSaver(Game game) {
         this.game = game;
         this.gameJson = toJson();
+        gameJson.put("tick", game.getTick());
     }
 
     /**
@@ -301,7 +302,7 @@ public class GameSaver {
         builder.setDungeon(dungeonJson);
         builder.setDungeonName(saveName);
         Game loadedGame = builder.buildGame();
-
+        loadedGame.setTick(dungeonJson.getInt("tick"));
         //Load Inventory
         EntityFactory factory = new EntityFactory(configJson);
         JSONArray inv = dungeonJson.getJSONArray("inventory");
