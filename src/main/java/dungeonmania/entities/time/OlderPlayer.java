@@ -9,9 +9,7 @@ import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
-import dungeonmania.entities.strategy.destroy.EnemyDestroy;
 import dungeonmania.entities.strategy.move.OlderPlayerMove;
-import dungeonmania.entities.strategy.overlap.EnemyOverlap;
 import dungeonmania.util.Position;
 
 public class OlderPlayer extends Enemy implements TimeTravel {
@@ -25,8 +23,6 @@ public class OlderPlayer extends Enemy implements TimeTravel {
         super(position, health, attack);
         atWhichTick = atTick;
         setMoveStrategy(new OlderPlayerMove(this));
-        setOverlapStrategy(new EnemyOverlap(this));
-        setDestroyStrategy(new EnemyDestroy(this));
         this.playerRoute = playerRoute;
         this.potionTimeTable = potionTimeTable;
     }
