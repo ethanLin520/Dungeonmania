@@ -29,6 +29,7 @@ public class Game {
     private int initialTreasureCount;
     private EntityFactory entityFactory;
     private boolean isInTick = false;
+    
     public static final int PLAYER_MOVEMENT = 0;
     public static final int PLAYER_MOVEMENT_CALLBACK = 1;
     public static final int AI_MOVEMENT = 2;
