@@ -287,11 +287,13 @@ public class Game {
     public Game rewindGame(int tick, boolean turner) {
         if (turner && player.getInventory().getEntities(TimeTurner.class).size() < 1) throw new IllegalArgumentException("No Time Turner!");
         int targetTime = tickCount > tick ? tickCount - tick : 0;
-        mapBuilder(pastGames.get(targetTime));
+        isInTick = !turner;
+        restoreMap(pastGames.get(targetTime));
+        isInTick = false;
         return this;
     }
 
-    private void mapBuilder(PastGame pastGame) {
+    private void restoreMap(PastGame pastGame) {
         GameMap newMap = new GameMap();
         Map<Entity, Position> entities = pastGame.getEntityMap();
         for (Map.Entry<Entity, Position> entry: entities.entrySet()) {
@@ -304,7 +306,7 @@ public class Game {
         newMap.setPlayer(player);
         newMap.setGame(this);
         setMap(newMap);
-        OlderPlayer op = pastGame.getOp();
+        OlderPlayer op = pastGame.getOP();
         register(() -> op.move(this), Game.AI_MOVEMENT, op.getId());
         op.setDisappearTick(tickCount);
     }

@@ -115,7 +115,7 @@ public class TimeTravelTest {
             res = dmc.tick(Direction.DOWN);
         }
 
-        // Og player
+        // Og player follows
         assertEquals(new Position(11, 1), TestUtils.getEntities(res, "older_player").get(0).getPosition());
 
         for (int i = 0; i < 20; i++) {

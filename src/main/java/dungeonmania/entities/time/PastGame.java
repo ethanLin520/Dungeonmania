@@ -38,7 +38,7 @@ public class PastGame {
         return tick;
     }
 
-    public OlderPlayer getOp() {
+    public OlderPlayer getOP() {
         return op;
     }
 
