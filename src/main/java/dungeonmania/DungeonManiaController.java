@@ -13,10 +13,19 @@ import dungeonmania.response.models.ResponseBuilder;
 import dungeonmania.util.Direction;
 import dungeonmania.util.FileLoader;
 import dungeonmania.util.GameSaver;
+import dungeonmania.util.NameConverter;
 
 public class DungeonManiaController {
     private Game game = null;
     public static final List<String> VALID_BUILDABLES = List.of("bow", "shield", "midnight_armour", "sceptre");
+
+    public Game getGame() {
+        return this.game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
 
     public String getSkin() {
         return "default";
@@ -58,8 +67,8 @@ public class DungeonManiaController {
 
         try {
             GameBuilder builder = new GameBuilder();
-            game = builder.setConfigName(configName).setDungeonName(dungeonName).buildGame();
-            game.setConfig(configName);
+            setGame(builder.setConfigPath(configName).setDungeonPath(dungeonName).buildGame());
+            game.setConfigName(configName);
             return ResponseBuilder.getDungeonResponse(game);
         } catch (JSONException e) {
             System.out.println(e.getMessage());
@@ -110,7 +119,12 @@ public class DungeonManiaController {
      * /game/save
      */
     public DungeonResponse saveGame(String name) throws IllegalArgumentException {
-        GameSaver.saveGame(game, name);
+        System.out.println("### Save Name: " + name);
+
+        Game saveGame = getGame();
+        GameSaver saver = new GameSaver(saveGame);
+        saver.saveGame(name);
+
         return ResponseBuilder.getDungeonResponse(game);
     }
 
@@ -118,30 +132,14 @@ public class DungeonManiaController {
      * /game/load
      */
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
-        String saveName = GameSaver.getSaveName(name);
-        System.out.println("Now loading save: " + saveName + " DungeonJson: " + name);
+        String saveName = NameConverter.getDungeonName(name);
 
-        JSONObject saves = GameSaver.getDungeonSaveConfig(saveName);
+        JSONObject gameJson = GameSaver.loadSaveDungeon(saveName);
+        GameSaver saver = new GameSaver(gameJson);
+        Game loadGame = saver.loadGame(saveName);
+        setGame(loadGame);
 
-        String dungeonName = saves.getString("save-name");
-        if (!saves().contains(dungeonName)) {
-            throw new IllegalArgumentException(saveName + " doesn't exists, check saves");
-        }
-
-        String dungeonConfig = saves.getString("config");
-        if (!configs().contains(dungeonConfig)) {
-            throw new IllegalArgumentException(saveName + " has a configuration that does not exists");
-        }
-
-        try {
-            GameBuilder builder = new GameBuilder();
-            game = builder.setConfigName(dungeonConfig).setSaveDungeonName(dungeonName).buildGame();
-            game.setConfig(dungeonConfig);
-            return ResponseBuilder.getDungeonResponse(game);
-        } catch (JSONException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
+        return ResponseBuilder.getDungeonResponse(game);
     }
 
     /**
@@ -149,7 +147,7 @@ public class DungeonManiaController {
      */
     public List<String> allGames() {
         List<String> games = new ArrayList<>();
-        JSONArray saves = GameSaver.loadConfig();
+        JSONArray saves = GameSaver.loadSaveRecord();
         for (int i = 0; i < saves.length(); i++) {
             JSONObject dungeon = (JSONObject) saves.get(i);
             games.add(dungeon.getString("dungeon"));

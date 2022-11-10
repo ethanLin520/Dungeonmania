@@ -39,4 +39,16 @@ public class NameConverter {
     public static String toSnakeCase(Class<?> clazz) {
         return toSnakeCase(clazz.getSimpleName());
     }
+
+    public static String getDungeonName(String dungeonName) {
+        String names[] = dungeonName.split("-");
+
+        return names[0];
+    }    
+    
+    public static String getSaveName(String dungeonName) {
+        String names[] = dungeonName.split("-");
+
+        return names[0] + "-" + names[names.length - 1];
+    }
 }

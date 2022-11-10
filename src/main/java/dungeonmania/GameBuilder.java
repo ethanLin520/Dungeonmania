@@ -2,11 +2,14 @@ package dungeonmania;
 
 import java.io.IOException;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.Player;
+import dungeonmania.entities.inventory.Inventory;
+import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.goals.Goal;
 import dungeonmania.goals.GoalFactory;
 import dungeonmania.map.GameMap;
@@ -24,24 +27,30 @@ public class GameBuilder {
     private String dungeonFile;
     private String dungeonName;
 
-    private JSONObject config;
-    private JSONObject dungeon;
+    private JSONObject config = null;
+    private JSONObject dungeon = null;
 
-    public GameBuilder setConfigName(String configName) {
+    public GameBuilder setConfigPath(String configName) {
         this.configFile = String.format("/configs/%s.json", configName);
         return this;
     }
 
-    public GameBuilder setDungeonName(String dungeonName) {
+    public GameBuilder setDungeonPath(String dungeonName) {
         this.dungeonName = dungeonName;
         this.dungeonFile = String.format("/dungeons/%s.json", dungeonName);
         return this;
     }
 
-    public GameBuilder setSaveDungeonName(String saveName) {
-        this.dungeonName = saveName;
-        this.dungeonFile = String.format("/saves/%s/%s.json", saveName, saveName);
-        return this;
+    public void setConfig(JSONObject config) {
+        this.config = config;
+    }
+
+    public void setDungeon(JSONObject dungeon) {
+        this.dungeon = dungeon;
+    }
+
+    public void setDungeonName(String dungeronName) {
+        this.dungeonName = dungeronName;
     }
 
     public Game buildGame() {
@@ -63,7 +72,8 @@ public class GameBuilder {
 
     private void loadConfig() {
         try {
-            config = new JSONObject(FileLoader.loadResourceFile(configFile));
+            if (config == null) 
+                config = new JSONObject(FileLoader.loadResourceFile(configFile));
         } catch (IOException e) {
             e.printStackTrace();
             config = null;
@@ -72,7 +82,8 @@ public class GameBuilder {
 
     private void loadDungeon() {
         try {
-            dungeon = new JSONObject(FileLoader.loadResourceFile(dungeonFile));
+            if (dungeon == null) 
+                dungeon = new JSONObject(FileLoader.loadResourceFile(dungeonFile));
         } catch (IOException e) {
             dungeon = null;
         }
@@ -100,6 +111,17 @@ public class GameBuilder {
         if (!dungeon.isNull("goal-condition")) {
             Goal goal = GoalFactory.createGoal(dungeon.getJSONObject("goal-condition"), config);
             game.setGoals(goal);
+        }
+    }
+
+    public void buildInventory(Game game, JSONArray json, JSONObject config) {
+        Inventory inventory = new Inventory();
+        EntityFactory factory = new EntityFactory(config);
+
+        for(int i = 0; i < json.length(); i++) {
+            JSONObject item = json.getJSONObject(i);
+            Entity e = factory.createEntity(item);
+            inventory.add((InventoryItem) e);
         }
     }
 }

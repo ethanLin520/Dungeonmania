@@ -186,7 +186,7 @@ public class Game {
         return config;
     }
 
-    public void setConfig(String config) {
+    public void setConfigName(String config) {
         this.config = config;
     }
 
