@@ -166,6 +166,14 @@ public class App implements SparkApplication {
             return callUsingSessionAndArgument(request, (dmc) -> dmc.allGames());
         }, gson::toJson);
 
+        Spark.post("api/game/load", "application/json", (request, response) -> {
+            try {
+                return callUsingSessionAndArgument(request, (dmc) -> dmc.rewind(Integer.parseInt(request.queryParams("ticks"))));
+            } catch (NumberFormatException e) {
+                throw new InvalidActionExceptionAPI("Input <ticks> must be an positive integer!\n" + e.getMessage());
+            }
+        }, gson::toJson);
+
         Scintilla.start();
     }
 

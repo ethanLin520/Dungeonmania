@@ -48,6 +48,7 @@
         "assassin": "images/tileset/entities/assassin.png",
         "sceptre": "images/tileset/entities/sceptre.png",
         "swamp_tile": "images/tileset/entities/swamp_tile.png",
-        "time_travelling_portal": "images/tileset/entities/portal_04.png"
+        "time_travelling_portal": "images/tileset/entities/portal_04.png",
+        "time_turner": "images/tileset/entities/time_turner.png"
     }
 }

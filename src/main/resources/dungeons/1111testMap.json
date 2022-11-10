@@ -12,7 +12,7 @@
             "movement_factor": 5
         },
         {
-            "type" : "time_travelling_portal",
+            "type" : "time_turner",
             "x" : 8,
             "y" : 1
         },
