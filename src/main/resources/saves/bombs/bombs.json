@@ -1,1 +1,0 @@
-{"entities":[{"x":-10,"y":5,"type":"spider"},{"x":8,"y":8,"type":"exit"},{"x":3,"y":3,"type":"player"},{"x":8,"y":9,"type":"spider"},{"x":6,"y":2,"type":"wall"}],"goal-condition":{"goal":"exit"},"inventory":[{"x":4,"y":5,"type":"treasure"},{"x":5,"y":3,"type":"treasure"}]}
