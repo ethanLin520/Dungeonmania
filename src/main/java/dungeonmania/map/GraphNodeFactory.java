@@ -29,10 +29,12 @@ public class GraphNodeFactory {
         case "sword":
         case "spider":
         case "door":
+        case "key":
         case "assassin":
         case "sun_stone":
         case "swamp_tile":
-        case "key":
+        case "time_turner":
+        case "time_travelling_portal":
             return new GraphNode(factory.createEntity(jsonEntity));
         default:
             return null;
