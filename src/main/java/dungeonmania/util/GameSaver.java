@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import dungeonmania.Game;
 import dungeonmania.GameBuilder;
+import dungeonmania.battles.BattleFacade;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.collectables.potions.Potion;
@@ -22,6 +23,9 @@ import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.goals.ComplexGoal;
 import dungeonmania.goals.Goal;
+import dungeonmania.response.models.BattleResponse;
+import dungeonmania.response.models.ItemResponse;
+import dungeonmania.response.models.RoundResponse;
 
 public class GameSaver {
     private static final String SAVE_PATH = "src/main/resources/saves";
@@ -200,6 +204,102 @@ public class GameSaver {
         return queue;
     }
 
+    private JSONArray roundResponse(List<RoundResponse> rsps) {
+        JSONArray json = new JSONArray();
+
+        for (RoundResponse rsp : rsps) {
+            JSONObject rspJson = new JSONObject();
+            rspJson.put("delta-player-health", rsp.getDeltaCharacterHealth());
+            rspJson.put("delta-enemy-health", rsp.getDeltaEnemyHealth());
+
+            json.put(rspJson);
+        }
+
+        return json;
+    }
+
+    private JSONArray battleItemJson(List<ItemResponse> rsps) {
+        JSONArray json = new JSONArray();
+
+        for (ItemResponse rsp : rsps) {
+            JSONObject rspJson = new JSONObject();
+            rspJson.put("id", rsp.getId());
+            rspJson.put("type", rsp.getType());
+            
+            json.put(rspJson);
+        }
+        return json;
+    }
+
+    private JSONArray battleRspJson(List<BattleResponse> rsps) {
+        JSONArray json = new JSONArray();
+
+        for (BattleResponse rsp : rsps) {
+            JSONObject rspJson = new JSONObject();
+            rspJson.put("enemy", rsp.getEnemy());
+            rspJson.put("initial-player-health", rsp.getInitialPlayerHealth());
+            rspJson.put("initial-enemy-health", rsp.getInitialEnemyHealth());
+            
+            JSONArray battleItems = battleItemJson(rsp.getBattleItems());
+            rspJson.put("battle-items", battleItems);
+            JSONArray rounds = roundResponse(rsp.getRounds());
+            rspJson.put("rounds", rounds);
+
+            json.put(rspJson);
+        }
+
+        return json;
+    }
+
+    private static RoundResponse loadRoundResponse(JSONObject roundJson) {
+        RoundResponse rsp = new RoundResponse(roundJson.getDouble("delta-player-health"),
+            roundJson.getDouble("delta-enemy-health"));
+        return rsp;
+    }
+
+    private static ItemResponse loadItemResponse(JSONObject itemJson) {
+        ItemResponse rsp = new ItemResponse(itemJson.getString("id"),
+            itemJson.getString("type"));
+        return rsp;
+    }
+
+    private static BattleResponse loadBattleResponse(JSONObject rsp) {
+        List<RoundResponse> roundResponse = new ArrayList<>();
+        JSONArray rrJson = rsp.getJSONArray("rounds");
+        for (int i = 0; i < rrJson.length(); i++) {
+            roundResponse.add(loadRoundResponse(rrJson.getJSONObject(i)));
+        }
+
+        List<ItemResponse> itemResponse = new ArrayList<>();
+        JSONArray isJson = rsp.getJSONArray("battle-items");
+        for (int i = 0; i < isJson.length(); i++) {
+            itemResponse.add(loadItemResponse(isJson.getJSONObject(i)));
+        }
+
+
+        BattleResponse br = new BattleResponse(
+            rsp.getString("enemy"),
+            roundResponse,
+            itemResponse,
+            rsp.getDouble("initial-player-health"),
+            rsp.getDouble("initial-enemy-health"));
+
+        return br;
+    }
+
+    private static BattleFacade loadBattleFacade(JSONArray brsJson) {
+        BattleFacade bf = new BattleFacade();
+        List<BattleResponse> brs = new ArrayList<>();
+        for (int i = 0; i < brsJson.length(); i++) {
+            JSONObject brJson = brsJson.getJSONObject(i);
+            BattleResponse br = loadBattleResponse(brJson);
+            brs.add(br);
+        }
+
+        bf.setBattleResponses(brs);
+        return bf;
+    }
+
     /**
      * Turn the Game object to JSONObject
      * @return
@@ -315,6 +415,10 @@ public class GameSaver {
             gameJson.put("kills", game.getKills());
             gameJson.put("valuable-collect", game.getValuableCollect());
             
+            // Save battle facade
+            List<BattleResponse> rsp = game.getBattleFacade().getBattleResponses();
+            JSONArray battleRsp = battleRspJson(rsp);
+            gameJson.put("battle-facade", battleRsp);
 
             if (!writeJsonFile(jsonPath, gameJson)) {
                 throw new IllegalArgumentException("Can't save game to path: " + SAVE_PATH + path);
@@ -362,11 +466,12 @@ public class GameSaver {
         //Load TriggerNext
         loadedGame.getPlayer().setNextTrigger(dungeonJson.getInt("next-trigger"));
 
-        // Save progressed goals
+        //Load progressed goals
         loadedGame.setKills(dungeonJson.getInt("kills"));
         loadedGame.setValuableCollect(dungeonJson.getInt("valuable-collect"));
 
-
+        //Load battle facade
+        loadedGame.setBattleFacade(loadBattleFacade(dungeonJson.getJSONArray("battle-facade")));
         return loadedGame;
     }
 
