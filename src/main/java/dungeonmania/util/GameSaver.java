@@ -307,8 +307,14 @@ public class GameSaver {
             }
             // Save PotionQueue
             gameJson.put("potion-queue", potionQueueJson(game.getPlayer().getPotionQueue()));
+
             // Save TriggerNext
             gameJson.put("next-trigger", game.getPlayer().getNextTrigger());
+
+            // Save progressed goals
+            gameJson.put("kills", game.getKills());
+            gameJson.put("valuable-collect", game.getValuableCollect());
+            
 
             if (!writeJsonFile(jsonPath, gameJson)) {
                 throw new IllegalArgumentException("Can't save game to path: " + SAVE_PATH + path);
@@ -347,12 +353,19 @@ public class GameSaver {
         loadedGame.setConfigName(config);
 
         //Load ineffective
-        JSONObject inEffectiveJson = dungeonJson.getJSONObject("ineffective");
-        Potion inEffective = (Potion) factory.createEntity(inEffectiveJson);
-        loadedGame.getPlayer().setEffectivePotion(inEffective);
+        if (dungeonJson.has("ineffective")) {
+            JSONObject inEffectiveJson = dungeonJson.getJSONObject("ineffective");
+            Potion inEffective = (Potion) factory.createEntity(inEffectiveJson);
+            loadedGame.getPlayer().setEffectivePotion(inEffective);
+        }
 
         //Load TriggerNext
         loadedGame.getPlayer().setNextTrigger(dungeonJson.getInt("next-trigger"));
+
+        // Save progressed goals
+        loadedGame.setKills(dungeonJson.getInt("kills"));
+        loadedGame.setValuableCollect(dungeonJson.getInt("valuable-collect"));
+
 
         return loadedGame;
     }

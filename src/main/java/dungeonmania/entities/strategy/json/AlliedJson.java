@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.enemies.Mercenary;
 
-public class AlliedJson extends DefaultJson {
+public class AlliedJson extends BattleableJson {
     public AlliedJson(Entity entity) {
         super(entity);
     }

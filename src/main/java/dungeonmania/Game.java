@@ -238,12 +238,20 @@ public class Game {
         return kills;
     }
 
+    public void setKills(int kills) {
+        this.kills = kills;
+    }
+
     public void addOneKill() {
         this.kills++;
     }
 
     public int getInitialTreasureCount() {
         return initialTreasureCount;
+    }
+
+    public void setValuableCollect(int valuableCollect) {
+        this.valuableCollect = valuableCollect;
     }
 
     public int getValuableCollect() {

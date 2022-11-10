@@ -1,6 +1,8 @@
 package dungeonmania.entities;
 
 import dungeonmania.Game;
+import dungeonmania.battles.BattleStatistics;
+import dungeonmania.battles.Battleable;
 import dungeonmania.entities.buildables.Bow;
 import dungeonmania.entities.buildables.MidnightArmour;
 import dungeonmania.entities.buildables.Sceptre;
@@ -140,90 +142,122 @@ public class EntityFactory {
         return new MidnightArmour(extraAttack, extraDefence);
     }
 
+    private void setMercenaryMove(JSONObject jsonEntity, Entity entity) {
+        Mercenary en = (Mercenary) entity;
+        if (jsonEntity.has("allied") && jsonEntity.has("mind_control_stop")) {
+            en.setMindControlStop(jsonEntity.getInt("mind_control_stop"));
+            en.setAllied(jsonEntity.getBoolean("allied"));
+            if (en.isAllied()) {
+                en.setMoveStrategy(new AlliedMove(en));
+                en.setOverlapStrategy(new DefaultOverlap());
+            }
+        }
+    }
+
     private Entity constructEntity(JSONObject jsonEntity, JSONObject config) {
         Position pos = new Position(jsonEntity.getInt("x"), jsonEntity.getInt("y"));
-        System.out.println("Creating " + jsonEntity.getString("type") + " at position: " + jsonEntity.getInt("x") + " " + jsonEntity.getInt("y"));
+        System.out.println("### " + jsonEntity.getString("type"));
+
+        Entity newEntity = null;
         switch (jsonEntity.getString("type")) {
         case "player":
-            return buildPlayer(pos);
+            newEntity = buildPlayer(pos); break;
         case "zombie_toast":
-            return buildZombieToast(pos);
+            newEntity = buildZombieToast(pos); break;
         case "zombie_toast_spawner":
-            return buildZombieToastSpawner(pos);
+            newEntity = buildZombieToastSpawner(pos); break;
         case "mercenary":
             Mercenary m = buildMercenary(pos);
-
-            if (jsonEntity.has("allied") && jsonEntity.has("mind_control_stop")) {
-                m.setMindControlStop(jsonEntity.getInt("mind_control_stop"));
-                m.setAllied(jsonEntity.getBoolean("allied"));
-                if (m.isAllied()) {
-                    m.setMoveStrategy(new AlliedMove(m));
-                    m.setOverlapStrategy(new DefaultOverlap());
-                }
-            }
-
-            return m;
+            setMercenaryMove(jsonEntity, m);
+            newEntity = m; break;
         case "wall":
-            return new Wall(pos);
+            newEntity = new Wall(pos); break;
         case "boulder":
-            return new Boulder(pos);
+            newEntity = new Boulder(pos); break;
         case "switch":
-            return new Switch(pos);
+            Switch s = new Switch(pos);
+            if (jsonEntity.has("activated")) {
+                s.setActivated(jsonEntity.getBoolean("activated"));
+            }
+            newEntity = s; break;
         case "exit":
-            return new Exit(pos);
+            newEntity = new Exit(pos); break;
         case "treasure":
-            return new Treasure(pos);
+            newEntity = new Treasure(pos); break;
         case "wood":
-            return new Wood(pos);
+            newEntity = new Wood(pos); break;
         case "arrow":
-            return new Arrow(pos);
+            newEntity = new Arrow(pos); break;
         case "bomb":
             int bombRadius = config.optInt("bomb_radius", Bomb.DEFAULT_RADIUS);
-            return new Bomb(pos, bombRadius);
+            newEntity = new Bomb(pos, bombRadius); break;
         case "invisibility_potion":
             int invisibilityPotionDuration = config.optInt(
                 "invisibility_potion_duration",
                 InvisibilityPotion.DEFAULT_DURATION);
-            return new InvisibilityPotion(pos, invisibilityPotionDuration);
+            newEntity = new InvisibilityPotion(pos, invisibilityPotionDuration); break;
         case "invincibility_potion":
             int invincibilityPotionDuration = config.optInt("invincibility_potion_duration",
             InvincibilityPotion.DEFAULT_DURATION);
-            return new InvincibilityPotion(pos, invincibilityPotionDuration);
+            newEntity = new InvincibilityPotion(pos, invincibilityPotionDuration); break;
         case "portal":
-            return new Portal(pos, ColorCodedType.valueOf(jsonEntity.getString("colour")));
+            newEntity = new Portal(pos, ColorCodedType.valueOf(jsonEntity.getString("colour"))); break;
         case "sword":
             double swordAttack = config.optDouble("sword_attack", Sword.DEFAULT_ATTACK);
             int swordDurability = config.optInt("sword_durability", Sword.DEFAULT_DURABILITY);
-            return new Sword(pos, swordAttack, swordDurability);
+            if (jsonEntity.has("durability")) {
+                swordDurability = jsonEntity.getInt("durability");
+            }
+            newEntity = new Sword(pos, swordAttack, swordDurability); break;
         case "spider":
-            return buildSpider(pos);
+            newEntity = buildSpider(pos); break;
         case "door":
-            return new Door(pos, jsonEntity.getInt("key"));
+            newEntity = new Door(pos, jsonEntity.getInt("key")); break;
         case "key":
-            return new Key(pos, jsonEntity.getInt("key"));
+            newEntity = new Key(pos, jsonEntity.getInt("key")); break;
         case "assassin":
             Assassin a = buildAssassin(pos);
-
-            if (jsonEntity.has("allied") && jsonEntity.has("mind_control_stop")) {
-                a.setMindControlStop(jsonEntity.getInt("mind_control_stop"));
-                a.setAllied(jsonEntity.getBoolean("allied"));
-                if (a.isAllied()) {
-                    a.setMoveStrategy(new AlliedMove(a));
-                    a.setOverlapStrategy(new DefaultOverlap());
-                }
-            }
-
-            return a;
+            setMercenaryMove(jsonEntity, a);
+            newEntity = a; break;
         case "sun_stone":
-            return new SunStone(pos);
+            newEntity = new SunStone(pos);
         case "swamp_tile":
-            return new SwampTile(pos, jsonEntity.getInt("movement_factor"));
+            newEntity = new SwampTile(pos, jsonEntity.getInt("movement_factor")); break;
         case "time_turner":
-            return new TimeTurner(pos);
+            newEntity = new TimeTurner(pos); break;
         case "time_travelling_portal":
-            return new TimeTravellingPortal(pos);
-        default:
-            return null;
+            newEntity = new TimeTravellingPortal(pos); break;
+        case "bow":
+            Bow bow = buildBow();
+            if (jsonEntity.has("durability")) {
+                bow.setDurability(jsonEntity.getInt("durability"));
+            }
+            newEntity = bow; break;
+        case "shield":
+            Shield shield = buildShield();
+            if (jsonEntity.has("durability")) {
+                shield.setDurability(jsonEntity.getInt("durability"));
+            }
+            newEntity = shield; break;
+        case "sceptre":
+            newEntity = buildSceptre(); break;
+        case "midnightarmour":
+            newEntity = buildMidnighArmour(); break;
         }
+        
+        if (newEntity != null) {
+            if (jsonEntity.has("entity-id")) {
+                newEntity.setId(jsonEntity.getString("entity-id"));
+            }
+            if (jsonEntity.has("stat")) {
+                BattleStatistics stat = new BattleStatistics(jsonEntity.getJSONObject("stat"));
+                Battleable battleable = (Battleable) newEntity; 
+                battleable.setBattleStatistics(stat);
+                newEntity = (Entity) battleable;
+            }
+        }
+    
+        System.out.println("Creating " + jsonEntity.getString("type") + " at position: " + jsonEntity.getInt("x") + " " + jsonEntity.getInt("y"));
+        return newEntity;
     }
 }

@@ -25,6 +25,10 @@ public class Shield extends Buildable {
         this.defence = 0;
     }
 
+    public void setDurability(int durability) {
+        this.durability = durability;
+    }
+
     @Override
     public void use(Game game) {
         durability--;
