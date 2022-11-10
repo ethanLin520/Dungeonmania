@@ -66,13 +66,13 @@ public class GameBuilder {
         buildMap(game);
         buildGoals(game);
         game.init();
-        
+
         return game;
     }
 
     private void loadConfig() {
         try {
-            if (config == null) 
+            if (config == null)
                 config = new JSONObject(FileLoader.loadResourceFile(configFile));
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,7 +82,7 @@ public class GameBuilder {
 
     private void loadDungeon() {
         try {
-            if (dungeon == null) 
+            if (dungeon == null)
                 dungeon = new JSONObject(FileLoader.loadResourceFile(dungeonFile));
         } catch (IOException e) {
             dungeon = null;

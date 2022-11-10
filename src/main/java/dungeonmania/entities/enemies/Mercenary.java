@@ -22,7 +22,7 @@ public class Mercenary extends Enemy implements Interactable {
     private int bribeRadius = Mercenary.DEFAULT_BRIBE_RADIUS;
     private boolean allied = false;
 
-    private int mindControlStop = 0;
+    private int mindControlStop = -1;
 
     public Mercenary(Position position, double health, double attack, int bribeAmount, int bribeRadius) {
         super(position, health, attack);

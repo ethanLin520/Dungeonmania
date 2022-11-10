@@ -86,7 +86,7 @@ public class GameSaver {
 
         return false;
     }
-    
+
     /**
      * Add a new saveRecord to the config file in saves
      * @param dungeonConfig
@@ -100,7 +100,7 @@ public class GameSaver {
             JSONObject save = saveConfig.getJSONObject(i);
             if (save.getString("save-name").equals(saveRecord.getString("save-name"))) {
                 oldConfig = i;
-            } 
+            }
         }
 
         if (oldConfig != -1) {
@@ -141,7 +141,7 @@ public class GameSaver {
     private JSONObject createJsonGoal(Goal goal) {
         JSONObject json = new JSONObject();
         json.put("goal", goal.goalType());
-        
+
         if (goal instanceof ComplexGoal) {
             JSONArray subgoals = new JSONArray();
 
@@ -155,7 +155,7 @@ public class GameSaver {
 
         return json;
     }
-    
+
     /**
      * Turn the Game object to JSONObject
      * @return
@@ -191,13 +191,13 @@ public class GameSaver {
      */
     public static JSONArray loadSaveRecord() {
         String file = loadJsonFile(SAVE_CONFIG);
-        
+
         if (file != null) {
             JSONObject saves = new JSONObject(file);
 
             return saves.getJSONArray("saves");
         }
-        
+
         return null;
     }
 
@@ -237,7 +237,7 @@ public class GameSaver {
      *  Write the json file to the save directory
      * @param game
      * @param name
-     * @return 
+     * @return
      * @throws IllegalArgumentException
      */
     public boolean saveGame(String name) throws IllegalArgumentException {
@@ -245,12 +245,12 @@ public class GameSaver {
         String dungeon = NameConverter.getDungeonName(name);
         String saveName = NameConverter.getSaveName(name);
         String path = SAVE_PATH + "/" + dungeon;
-        
+
         File file = new File(path);
         if (!file.exists()) {
             file.mkdir();
         }
-        
+
         System.out.println("Saving: " + dungeon + "| dungeon json: " + saveName + " dungeon config: " + game.getConfig());
         if (addToSaveConfig(createRecord(dungeon, saveName, game.getConfig()))) {
             String jsonPath = dungeon + "/" + dungeon + ".json";
@@ -267,7 +267,7 @@ public class GameSaver {
     public Game loadGame(String saveName) {
         if (gameJson == null) return null;
         System.out.println("Loading save: " + saveName);
-    
+
         String config = getDungeonConfig(saveName);
         System.out.println("Loading config: " + config);
 
@@ -279,7 +279,7 @@ public class GameSaver {
         builder.setDungeonName(saveName);
         game = builder.buildGame();
 
-        
+
         game.setConfigName(config);
 
         return game;
@@ -299,5 +299,5 @@ public class GameSaver {
 
     public void setGameJson(JSONObject gameJson) {
         this.gameJson = gameJson;
-    }    
+    }
 }

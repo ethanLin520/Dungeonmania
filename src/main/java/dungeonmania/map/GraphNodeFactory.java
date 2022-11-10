@@ -35,6 +35,7 @@ public class GraphNodeFactory {
         case "swamp_tile":
         case "time_turner":
         case "time_travelling_portal":
+        case "older_player":
             return new GraphNode(factory.createEntity(jsonEntity));
         default:
             return null;

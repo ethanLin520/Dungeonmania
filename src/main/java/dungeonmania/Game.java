@@ -1,6 +1,9 @@
 package dungeonmania;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.UUID;
 
@@ -13,10 +16,14 @@ import dungeonmania.entities.collectables.Bomb;
 import dungeonmania.entities.collectables.Treasure;
 import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.enemies.Enemy;
+import dungeonmania.entities.time.OlderPlayer;
+import dungeonmania.entities.time.PastGame;
 import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.goals.Goal;
 import dungeonmania.map.GameMap;
+import dungeonmania.map.GraphNode;
 import dungeonmania.util.Direction;
+import dungeonmania.util.Position;
 
 public class Game {
     private String id;
@@ -29,7 +36,7 @@ public class Game {
     private int initialTreasureCount;
     private EntityFactory entityFactory;
     private boolean isInTick = false;
-    
+
     public static final int PLAYER_MOVEMENT = 0;
     public static final int PLAYER_MOVEMENT_CALLBACK = 1;
     public static final int AI_MOVEMENT = 2;
@@ -41,6 +48,10 @@ public class Game {
 
     private int kills = 0;
     private int valuableCollect = 0;
+
+    private List<Position> playerRoute = new ArrayList<>();
+    private Map<Integer, Potion> potionTimeTable = new HashMap<>();
+    private List<PastGame> pastGames = new ArrayList<>();
 
     public Game(String dungeonName) {
         this.name = dungeonName;
@@ -55,6 +66,9 @@ public class Game {
         player = map.getPlayer();
         register(() -> player.onTick(tickCount), PLAYER_MOVEMENT, "potionQueue");
         initialTreasureCount = map.getEntities(Treasure.class).size();
+        // Store game state for time travel purpose
+        playerRoute.add(player.getPosition());
+        pastGames.add(new PastGame(this));
     }
 
     public Game tick(Direction movementDirection) {
@@ -74,8 +88,10 @@ public class Game {
         registerOnce(() -> {
             if (item instanceof Bomb)
                 player.use((Bomb) item, map);
-            if (item instanceof Potion)
+            if (item instanceof Potion) {
                 player.use((Potion) item, tickCount);
+                potionTimeTable.put(tickCount, (Potion)item);
+            }
         }, PLAYER_MOVEMENT, "playerUsesItem");
         tick();
         return this;
@@ -159,6 +175,11 @@ public class Game {
         sub.removeIf(s -> !s.isValid());
         tickCount++;
         // update the weapons/potions duration
+
+        // Store game state for time travel purpose
+        playerRoute.add(player.getPosition());
+        pastGames.add(new PastGame(this));
+
         return tickCount;
     }
 
@@ -251,6 +272,34 @@ public class Game {
     }
 
     public Game rewindGame(int tick) {
+        int targetTime = tickCount > tick ? tickCount - tick : 0;
+        mapBuilder(pastGames.get(targetTime));
         return this;
+    }
+
+    private void mapBuilder(PastGame pastGame) {
+        GameMap newMap = new GameMap();
+        Map<Entity, Position> entities = pastGame.getEntityMap();
+        for (Map.Entry<Entity, Position> entry: entities.entrySet()) {
+            GraphNode newNode = new GraphNode(entry.getKey(), entry.getValue(), 1);
+
+            if (newNode != null)
+                newMap.addNode(newNode);
+        }
+        newMap.addNode(new GraphNode(player));
+        newMap.setPlayer(player);
+        newMap.setGame(this);
+        setMap(newMap);
+        OlderPlayer op = pastGame.getOp();
+        register(() -> op.move(this), Game.AI_MOVEMENT, op.getId());
+        op.setDisappearTick(tickCount);
+    }
+
+    public List<Position> getPlayerRoute() {
+        return playerRoute;
+    }
+
+    public Map<Integer, Potion> getPotionTimeTable() {
+        return potionTimeTable;
     }
 }

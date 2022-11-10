@@ -4,6 +4,7 @@ import dungeonmania.entities.Entity;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.collectables.Collectable;
 import dungeonmania.entities.collectables.Valuable;
+import dungeonmania.entities.time.OlderPlayer;
 import dungeonmania.map.GameMap;
 
 public class CollectableOverlap implements OverlapStrategy {
@@ -21,6 +22,8 @@ public class CollectableOverlap implements OverlapStrategy {
             map.destroyEntity(collectable);
             if (collectable instanceof Valuable)
                 map.getGame().collectOneValuable();
+        } else if (entity instanceof OlderPlayer) {
+            map.destroyEntity(collectable);
         }
     }
 }
