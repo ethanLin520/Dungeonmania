@@ -6,7 +6,7 @@ import dungeonmania.entities.enemies.Enemy;
 import dungeonmania.entities.enemies.Mercenary;
 import dungeonmania.map.GameMap;
 
-public class PlayerOverlap  implements OverlapStrategy {
+public class PlayerOverlap implements OverlapStrategy {
     private Player player;
 
     public PlayerOverlap(Player player) {
