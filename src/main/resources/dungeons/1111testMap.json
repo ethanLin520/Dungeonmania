@@ -12,7 +12,7 @@
             "movement_factor": 5
         },
         {
-            "type" : "mercenary",
+            "type" : "time_travelling_portal",
             "x" : 8,
             "y" : 1
         },
