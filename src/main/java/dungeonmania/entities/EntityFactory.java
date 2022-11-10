@@ -16,7 +16,6 @@ import dungeonmania.map.GameMap;
 import dungeonmania.entities.collectables.potions.InvincibilityPotion;
 import dungeonmania.entities.collectables.potions.InvisibilityPotion;
 import dungeonmania.util.Position;
-import javassist.bytecode.stackmap.BasicBlock.Catch;
 
 import java.util.ArrayList;
 import java.util.List;

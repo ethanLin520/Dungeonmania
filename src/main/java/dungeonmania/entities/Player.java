@@ -55,6 +55,22 @@ public class Player extends Entity implements Battleable {
         return inventory.hasSceptre();
     }
 
+    public void setPotionQueue(Queue<Potion> queue) {
+        this.potionQueue = queue;
+    }
+
+    public Queue<Potion> getPotionQueue() {
+        return potionQueue;
+    }
+
+    public int getNextTrigger() {
+        return nextTrigger;
+    }
+    
+    public void setNextTrigger(int nextTrigger) {
+        this.nextTrigger = nextTrigger;
+    }
+
     public <T extends InventoryItem> T getFirst(Class<T> type) {
         return inventory.getFirst(type);
     }
@@ -97,6 +113,10 @@ public class Player extends Entity implements Battleable {
 
     public Potion getEffectivePotion() {
         return inEffective;
+    }
+
+    public void setEffectivePotion(Potion inEffective) {
+        this.inEffective = inEffective;
     }
 
     public <T extends InventoryItem> void use(Class<T> itemType) {

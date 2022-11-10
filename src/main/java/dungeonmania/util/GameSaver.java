@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 import org.json.JSONArray;
@@ -15,6 +17,7 @@ import dungeonmania.Game;
 import dungeonmania.GameBuilder;
 import dungeonmania.entities.Entity;
 import dungeonmania.entities.EntityFactory;
+import dungeonmania.entities.collectables.potions.Potion;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.goals.ComplexGoal;
@@ -144,6 +147,16 @@ public class GameSaver {
         return inventories;
     }
 
+    private static Queue<Potion> loadPotionQueue(EntityFactory factory, JSONArray queue) {
+        Queue<Potion> potionQueue = new LinkedList<>();
+        for (int i = 0; i < queue.length(); i++) {
+            JSONObject json = queue.getJSONObject(i);
+            potionQueue.add((Potion) factory.createEntity(json));
+        }
+
+        return potionQueue;
+    }
+
     /**
      * Create a JSONObject for the game goals
      * @param goal
@@ -177,6 +190,14 @@ public class GameSaver {
         }
 
         return things;
+    }
+
+    private JSONArray potionQueueJson(Queue<Potion> potionQueue) {
+        JSONArray queue = new JSONArray();
+        for (Potion p : potionQueue) {
+            queue.put(p.toJson());
+        }
+        return queue;
     }
 
     /**
@@ -277,8 +298,17 @@ public class GameSaver {
         System.out.println("Saving: " + dungeon + "| dungeon json: " + saveName + " dungeon config: " + game.getConfig());
         if (addToSaveConfig(createRecord(dungeon, saveName, game.getConfig()))) {
             String jsonPath = dungeon + "/" + dungeon + ".json";
-            // Save Goals and Entities
+            // Save Inventory
             gameJson.put("inventory", inventoryJson(game.getPlayer().getInventory()));
+            // Save InEffective
+            Potion inEffective = game.getPlayer().getEffectivePotion();
+            if (inEffective != null) {
+                gameJson.put("ineffective", inEffective.toJson());
+            }
+            // Save PotionQueue
+            gameJson.put("potion-queue", potionQueueJson(game.getPlayer().getPotionQueue()));
+            // Save TriggerNext
+            gameJson.put("next-trigger", game.getPlayer().getNextTrigger());
 
             if (!writeJsonFile(jsonPath, gameJson)) {
                 throw new IllegalArgumentException("Can't save game to path: " + SAVE_PATH + path);
@@ -302,13 +332,27 @@ public class GameSaver {
         builder.setDungeon(dungeonJson);
         builder.setDungeonName(saveName);
         Game loadedGame = builder.buildGame();
-        loadedGame.setTick(dungeonJson.getInt("tick"));
-        //Load Inventory
+
         EntityFactory factory = new EntityFactory(configJson);
+        // Load Tick
+        loadedGame.setTick(dungeonJson.getInt("tick"));
+
+        //Load Inventory
         JSONArray inv = dungeonJson.getJSONArray("inventory");
         loadedGame.getPlayer().getInventory().setItems((loadInventoryJson(factory, inv)));
-        
+
+        //Load PotionQueue
+        JSONArray potionQueue = dungeonJson.getJSONArray("potion-queue");
+        loadedGame.getPlayer().setPotionQueue(loadPotionQueue(factory, potionQueue));
         loadedGame.setConfigName(config);
+
+        //Load ineffective
+        JSONObject inEffectiveJson = dungeonJson.getJSONObject("ineffective");
+        Potion inEffective = (Potion) factory.createEntity(inEffectiveJson);
+        loadedGame.getPlayer().setEffectivePotion(inEffective);
+
+        //Load TriggerNext
+        loadedGame.getPlayer().setNextTrigger(dungeonJson.getInt("next-trigger"));
 
         return loadedGame;
     }
