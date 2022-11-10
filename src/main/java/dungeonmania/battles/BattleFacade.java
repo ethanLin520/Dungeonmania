@@ -74,6 +74,10 @@ public class BattleFacade {
                 initialEnemyHealth));
     }
 
+    public void setBattleResponses(List<BattleResponse> brs) {
+        this.battleResponses = brs;
+    }
+
     public List<BattleResponse> getBattleResponses() {
         return battleResponses;
     }
