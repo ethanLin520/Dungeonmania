@@ -154,6 +154,7 @@ public class DungeonManiaController {
             JSONObject dungeon = (JSONObject) saves.get(i);
             games.add(dungeon.getString("dungeon"));
         }
+        System.out.println("Found " + games.size() + " games on your local saves");
         return games;
     }
 

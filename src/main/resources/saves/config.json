@@ -1,4 +1,9 @@
 {
     "saves": [
+        {
+            "save-name": "save1",
+            "config": "bribe_amount_3",
+            "dungeon": "save1-1668057959363"
+        }
     ]
 }
