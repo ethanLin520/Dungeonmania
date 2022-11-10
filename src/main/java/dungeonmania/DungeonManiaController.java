@@ -125,7 +125,7 @@ public class DungeonManiaController {
 
         String dungeonName = saves.getString("save-name");
         if (!saves().contains(dungeonName)) {
-            throw new IllegalArgumentException(saveName + " is not a dungeon that exists");
+            throw new IllegalArgumentException(saveName + " doesn't exists, check saves");
         }
 
         String dungeonConfig = saves.getString("config");
