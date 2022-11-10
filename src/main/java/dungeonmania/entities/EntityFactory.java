@@ -192,7 +192,10 @@ public class EntityFactory {
             return new SunStone(pos);
         case "swamp_tile":
             return new SwampTile(pos, jsonEntity.getInt("movement_factor"));
-
+        case "time_turner":
+            return new TimeTurner(pos);
+        case "time_travelling_portal":
+            return new TimeTravellingPortal(pos);
         default:
             return null;
         }
