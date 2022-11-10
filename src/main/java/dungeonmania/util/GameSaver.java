@@ -11,23 +11,34 @@ import org.json.JSONObject;
 
 
 import dungeonmania.Game;
+import dungeonmania.GameBuilder;
+import dungeonmania.entities.Entity;
 import dungeonmania.goals.ComplexGoal;
 import dungeonmania.goals.Goal;
-import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
-import dungeonmania.response.models.ResponseBuilder;
-
 
 public class GameSaver {
     private static final String SAVE_PATH = "src/main/resources/saves";
-    public static final String SAVE_CONFIG = "/saves/config.json";
+    private static final String SAVE_CONFIG = "/saves/config.json";
+
+    private Game game = null;
+    private JSONObject gameJson = null;
+
+    public GameSaver(Game game) {
+        this.game = game;
+        this.gameJson = toJson();
+    }
+
+    public GameSaver(JSONObject game) {
+        this.gameJson = game;
+    }
 
     /**
-     * Return the file content.
+     * Return a json file's content.
      * @param file
-     * @return the whole file being loaded.
+     * @return String: json format.
      */
     private static String loadJsonFile(String file) {
+        System.out.println("Loading file at: " + file);
         String load = null;
 
         try {
@@ -40,22 +51,31 @@ public class GameSaver {
         return load;
     }
 
-    private static boolean saveJsonFile(String name, JSONObject json) {
+    /**
+     * Write a game to the save path.
+     * @param name
+     * @param json
+     * @return True if succeed else fals
+     */
+    private static boolean writeJsonFile(String name, JSONObject json) {
 
         try {
             String savePath = SAVE_PATH + "/" + name;
             File checkFile = new File(savePath);
+
             if (checkFile.exists()) {
+                // If file exists write to the file
                 FileWriter file = new FileWriter(savePath);
                 file.write(json.toString());
                 file.flush();
                 file.close();
             } else {
+                // Else create a new file
                 System.out.println("File doesn't exist creating new file: " + savePath);
                 if (!checkFile.createNewFile()) {
-                    throw new IOException("Failed to create new file" + savePath);
+                    throw new IOException("Failed to create new file: " + savePath);
                 }
-                saveJsonFile(name, json);
+                writeJsonFile(name, json);
             }
 
             return true;
@@ -63,30 +83,62 @@ public class GameSaver {
             System.out.println("Failed to save JSON file");
             e.printStackTrace();
         }
+
         return false;
     }
     
-    private static JSONObject createConfigJson(String saveName, String dungeon, String config) {
+    /**
+     * Add a new saveRecord to the config file in saves
+     * @param dungeonConfig
+     * @return
+     */
+    private static boolean addToSaveConfig(JSONObject saveRecord) {
+        JSONArray saveConfig = loadSaveRecord();
+
+        int oldConfig = -1;
+        for (int i = 0; i < saveConfig.length(); i++) {
+            JSONObject save = saveConfig.getJSONObject(i);
+            if (save.getString("save-name").equals(saveRecord.getString("save-name"))) {
+                oldConfig = i;
+            } 
+        }
+
+        if (oldConfig != -1) {
+            saveConfig.remove(oldConfig);
+        }
+        saveConfig.put(saveRecord);
+
+        JSONObject config = new JSONObject();
+        config.put("saves", saveConfig);
+
+
+        return writeJsonFile("config.json", config);
+    }
+
+    /**
+     * Creats a new saveRecord
+     * @param saveName
+     * @param dungeon
+     * @param config
+     * @return JSONObject
+     */
+    private static JSONObject createRecord(String saveName, String dungeon, String config) {
         JSONObject o = new JSONObject();
+
         o.put("save-name", saveName);
         o.put("dungeon", dungeon);
         o.put("config", config);
+
         return o;
     }
 
-    private static JSONObject createEntityJson(EntityResponse e) {
-        JSONObject entity = new JSONObject();
-        entity.put("type", e.getType());
-        entity.put("x", e.getPosition().getX());
-        entity.put("y", e.getPosition().getY());
-        if (e.getType().equals("door") || e.getType().equals("key")) {
-            entity.put("key", e.getKey());
-        }
 
-        return entity;
-    }
-
-    private static JSONObject createGoalJson(Goal goal) {
+    /**
+     * Create a JSONObject for the game goals
+     * @param goal
+     * @return
+     */
+    private JSONObject createJsonGoal(Goal goal) {
         JSONObject json = new JSONObject();
         json.put("goal", goal.goalType());
         
@@ -95,7 +147,7 @@ public class GameSaver {
 
             ComplexGoal cgoal = (ComplexGoal) goal;
             for (Goal subgoal : cgoal.getSubgoal()) {
-                subgoals.put(createGoalJson(subgoal));
+                subgoals.put(createJsonGoal(subgoal));
             }
 
             json.put("subgoals", subgoals);
@@ -103,77 +155,23 @@ public class GameSaver {
 
         return json;
     }
-
-    private static boolean addToSaveConfig(JSONObject newConfig) {
-        JSONArray saves = loadConfig();
-
-        int oldConfig = -1;
-        for (int i = 0; i < saves.length(); i++) {
-            JSONObject save = saves.getJSONObject(i);
-            if (save.getString("save-name").equals(newConfig.getString("save-name"))) {
-                oldConfig = i;
-            } 
-        }
-
-        if (oldConfig != -1) {
-            saves.remove(oldConfig);
-        }
-        saves.put(newConfig);
-
-        JSONObject config = new JSONObject();
-        config.put("saves", saves);
-
-
-        return saveJsonFile("config.json", config);
-    }
     
-    private static JSONObject gameToJson(Game game) {
-        DungeonResponse rsp = ResponseBuilder.getDungeonResponse(game);
-
+    /**
+     * Turn the Game object to JSONObject
+     * @return
+     */
+    private JSONObject toJson() {
         JSONArray entities = new JSONArray();
-        for (EntityResponse e : rsp.getEntities()) {
-            entities.put(createEntityJson(e));
+        for (Entity e : game.getMap().getEntities()) {
+            entities.put(e.toJson());
         }
-        JSONObject goalCondition = createGoalJson(game.getGoals());
+        JSONObject goalCondition = createJsonGoal(game.getGoals());
 
         JSONObject dungeon = new JSONObject();
         dungeon.put("entities", entities);
         dungeon.put("goal-condition", goalCondition);
 
         return dungeon;
-    }
-    
-
-    /**
-     * Load saves from config file
-     * @param config
-     * @return
-     */
-    public static JSONArray loadConfig() {
-        String file = loadJsonFile(SAVE_CONFIG);
-        
-        if (file != null) {
-            JSONObject saves = new JSONObject(file);
-            return saves.getJSONArray("saves");
-        }
-        
-        return null;
-    }
-
-    /**
-     * Get the JSON object of the given dungeon name.
-     * @param dungeon
-     * @return
-     */
-    public static JSONObject getDungeonSaveConfig(String dungeon) {
-        JSONArray dungeons = loadConfig();
-        for (int i = 0; i < dungeons.length(); i++) {
-            JSONObject d = (JSONObject) dungeons.get(i);
-            if (d.getString("save-name").equals(dungeon)) {
-                return d;
-            }
-        }
-        return null;
     }
 
     /**
@@ -182,39 +180,124 @@ public class GameSaver {
      */
     public static List<String> getAllSaves() {
         List<String> files = FileLoader.listFileNamesInResourceDirectory("saves");
+
         return files.stream().map(s -> s.replaceFirst("/.*", "")).collect(Collectors.toList());
     }
 
-    public static void saveGame(Game game, String name) throws IllegalArgumentException {
-        // Check if there is already a file called [name]
-        //      if not creats the file
-        //      else: update the file's content.
-        System.out.println("Now saving: " + getSaveName(name) + " dungeon json: " + name);
+    /**
+     * Load saveRecords from config file
+     * @param config
+     * @return
+     */
+    public static JSONArray loadSaveRecord() {
+        String file = loadJsonFile(SAVE_CONFIG);
+        
+        if (file != null) {
+            JSONObject saves = new JSONObject(file);
 
-        String saveName = getSaveName(name);
-        name = getDugeonJsonName(name);
+            return saves.getJSONArray("saves");
+        }
+        
+        return null;
+    }
 
-        String path = SAVE_PATH + "/" + saveName;
+    /**
+     * Load given dungeon's saveRecord from config file
+     * @param dungeon
+     * @return
+     */
+    public static JSONObject loadSaveRecord(String dungeon) {
+        JSONArray dungeons = loadSaveRecord();
+        for (int i = 0; i < dungeons.length(); i++) {
+            JSONObject d = (JSONObject) dungeons.get(i);
+            if (d.getString("save-name").equals(dungeon)) return d;
+        }
+
+        return null;
+    }
+
+    public static JSONObject loadSaveDungeon(String dungeonName) {
+        dungeonName = String.format("/saves/%s/%s.json", dungeonName, dungeonName);
+        return new JSONObject(loadJsonFile(dungeonName));
+    }
+
+    public static JSONObject loadSaveConfig(String configName) {
+        String path = String.format("/configs/%s.json", configName);
+        return new JSONObject(loadJsonFile(path));
+    }
+
+    public static String getDungeonConfig(String dungeon) {
+        JSONObject record = loadSaveRecord(dungeon);
+        return record.getString("config");
+    }
+
+    /**
+     *  Save the game with the given name
+     *  Turns the game to a JSON file
+     *  Write the json file to the save directory
+     * @param game
+     * @param name
+     * @return 
+     * @throws IllegalArgumentException
+     */
+    public boolean saveGame(String name) throws IllegalArgumentException {
+        if (gameJson == null || game == null) return false;
+        String dungeon = NameConverter.getDungeonName(name);
+        String saveName = NameConverter.getSaveName(name);
+        String path = SAVE_PATH + "/" + dungeon;
+        
         File file = new File(path);
         if (!file.exists()) {
             file.mkdir();
         }
-        if (addToSaveConfig(createConfigJson(saveName, name, game.getConfig()))) {
-            String jsonPath = saveName + "/" + saveName + ".json";
-            if (!saveJsonFile(jsonPath, gameToJson(game))) {
-                throw new IllegalArgumentException("Can't save game to path:" + SAVE_PATH + path);
+        
+        System.out.println("Saving: " + dungeon + "| dungeon json: " + saveName + " dungeon config: " + game.getConfig());
+        if (addToSaveConfig(createRecord(dungeon, saveName, game.getConfig()))) {
+            String jsonPath = dungeon + "/" + dungeon + ".json";
+            // Save Goals and Entities
+
+            if (!writeJsonFile(jsonPath, gameJson)) {
+                throw new IllegalArgumentException("Can't save game to path: " + SAVE_PATH + path);
             }
         }
 
+        return true;
     }
 
-    public static String getSaveName(String dungeonJsonName) {
-        String names[] = dungeonJsonName.split("-");
-        return names[0];
-    }    
+    public Game loadGame(String saveName) {
+        if (gameJson == null) return null;
+        System.out.println("Loading save: " + saveName);
     
-    public static String getDugeonJsonName(String dungeonJsonName) {
-        String names[] = dungeonJsonName.split("-");
-        return names[0] + "-" + names[names.length - 1];
+        String config = getDungeonConfig(saveName);
+        System.out.println("Loading config: " + config);
+
+        JSONObject configJson = loadSaveConfig(config);
+        GameBuilder builder = new GameBuilder();
+
+        builder.setConfig(configJson);
+        builder.setDungeon(gameJson);
+        builder.setDungeonName(saveName);
+        game = builder.buildGame();
+
+        
+        game.setConfigName(config);
+
+        return game;
     }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public JSONObject getGameJson() {
+        return gameJson;
+    }
+
+    public void setGameJson(JSONObject gameJson) {
+        this.gameJson = gameJson;
+    }    
 }

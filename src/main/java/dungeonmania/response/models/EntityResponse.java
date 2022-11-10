@@ -7,7 +7,6 @@ public final class EntityResponse {
     private final String type;
     private final Position position;
     private final boolean isInteractable;
-    private int key;
 
     public EntityResponse(String id, String type, Position position, boolean isInteractable) {
         this.id = id;
@@ -30,14 +29,6 @@ public final class EntityResponse {
 
     public final Position getPosition() {
         return position;
-    }
-
-    public final int getKey() {
-        return key;
-    }
-
-    public void setKey(int key) {
-        this.key = key;
     }
 
     @Override

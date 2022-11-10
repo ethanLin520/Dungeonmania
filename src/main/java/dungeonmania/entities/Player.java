@@ -87,6 +87,10 @@ public class Player extends Entity implements Battleable {
         return inventory.add((InventoryItem) item);
     }
 
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
     public Inventory getInventory() {
         return inventory;
     }

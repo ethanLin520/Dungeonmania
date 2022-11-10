@@ -3,6 +3,8 @@ package dungeonmania.entities;
 import dungeonmania.Game;
 import dungeonmania.entities.strategy.destroy.DefaultDestroy;
 import dungeonmania.entities.strategy.destroy.DestroyStrategy;
+import dungeonmania.entities.strategy.json.JsonStrategy;
+import dungeonmania.entities.strategy.json.DefaultJson;
 import dungeonmania.entities.strategy.move.DefaultMove;
 import dungeonmania.entities.strategy.move.MoveStrategy;
 import dungeonmania.entities.strategy.move.SwampMove;
@@ -16,6 +18,7 @@ import dungeonmania.util.Position;
 
 import java.util.UUID;
 
+import org.json.JSONObject;
 public abstract class Entity {
     public static final int FLOOR_LAYER = 0;
     public static final int ITEM_LAYER = 1;
@@ -32,6 +35,7 @@ public abstract class Entity {
     private MovedAwayStrategy movedAwayStrategy = new DefaultMovedAway();
     private DestroyStrategy destroyStrategy = new DefaultDestroy();
     private MoveStrategy moveStrategy = new DefaultMove();
+    private JsonStrategy jsonStrategy = new DefaultJson(this);
 
     public Entity(Position position) {
         this.position = position;
@@ -97,6 +101,10 @@ public abstract class Entity {
         moveStrategy.apply(game);
     }
 
+    public JSONObject toJson() {
+        return jsonStrategy.apply();
+    }
+
     protected final void setOverlapStrategy(OverlapStrategy overlapStrategy) {
         this.overlapStrategy = overlapStrategy;
     }
@@ -115,6 +123,10 @@ public abstract class Entity {
 
     protected final MoveStrategy getMoveStrategy() {
         return this.moveStrategy;
+    }
+
+    protected final void setJsonStrategy(JsonStrategy jsonStrategy) {
+        this.jsonStrategy = jsonStrategy;
     }
 
     /**
