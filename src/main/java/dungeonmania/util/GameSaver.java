@@ -3,6 +3,7 @@ package dungeonmania.util;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,9 @@ import org.json.JSONObject;
 import dungeonmania.Game;
 import dungeonmania.GameBuilder;
 import dungeonmania.entities.Entity;
+import dungeonmania.entities.EntityFactory;
+import dungeonmania.entities.inventory.Inventory;
+import dungeonmania.entities.inventory.InventoryItem;
 import dungeonmania.goals.ComplexGoal;
 import dungeonmania.goals.Goal;
 
@@ -26,10 +30,7 @@ public class GameSaver {
     public GameSaver(Game game) {
         this.game = game;
         this.gameJson = toJson();
-    }
-
-    public GameSaver(JSONObject game) {
-        this.gameJson = game;
+        gameJson.put("tick", game.getTick());
     }
 
     /**
@@ -132,6 +133,16 @@ public class GameSaver {
         return o;
     }
 
+    private static List<InventoryItem> loadInventoryJson(EntityFactory factory, JSONArray inv) {
+        List<InventoryItem> inventories = new ArrayList<>();
+        for (int i = 0; i < inv.length(); i++) {
+            JSONObject json = inv.getJSONObject(i);
+            InventoryItem item = (InventoryItem) factory.createEntity(json);
+            inventories.add(item);
+        }
+
+        return inventories;
+    }
 
     /**
      * Create a JSONObject for the game goals
@@ -154,6 +165,18 @@ public class GameSaver {
         }
 
         return json;
+    }
+
+    private JSONArray inventoryJson(Inventory inv) {
+        JSONArray things = new JSONArray();
+
+        List<InventoryItem> items = inv.getInventoryItems();
+        for (InventoryItem item : items) {
+            Entity thing = (Entity) item;
+            things.put(thing.toJson());
+        }
+
+        return things;
     }
 
     /**
@@ -255,6 +278,7 @@ public class GameSaver {
         if (addToSaveConfig(createRecord(dungeon, saveName, game.getConfig()))) {
             String jsonPath = dungeon + "/" + dungeon + ".json";
             // Save Goals and Entities
+            gameJson.put("inventory", inventoryJson(game.getPlayer().getInventory()));
 
             if (!writeJsonFile(jsonPath, gameJson)) {
                 throw new IllegalArgumentException("Can't save game to path: " + SAVE_PATH + path);
@@ -264,9 +288,9 @@ public class GameSaver {
         return true;
     }
 
-    public Game loadGame(String saveName) {
-        if (gameJson == null) return null;
+    public static Game loadGame(String saveName) {
         System.out.println("Loading save: " + saveName);
+        JSONObject dungeonJson = loadSaveDungeon(saveName);
 
         String config = getDungeonConfig(saveName);
         System.out.println("Loading config: " + config);
@@ -275,14 +299,18 @@ public class GameSaver {
         GameBuilder builder = new GameBuilder();
 
         builder.setConfig(configJson);
-        builder.setDungeon(gameJson);
+        builder.setDungeon(dungeonJson);
         builder.setDungeonName(saveName);
-        game = builder.buildGame();
+        Game loadedGame = builder.buildGame();
+        loadedGame.setTick(dungeonJson.getInt("tick"));
+        //Load Inventory
+        EntityFactory factory = new EntityFactory(configJson);
+        JSONArray inv = dungeonJson.getJSONArray("inventory");
+        loadedGame.getPlayer().getInventory().setItems((loadInventoryJson(factory, inv)));
 
+        loadedGame.setConfigName(config);
 
-        game.setConfigName(config);
-
-        return game;
+        return loadedGame;
     }
 
     public Game getGame() {

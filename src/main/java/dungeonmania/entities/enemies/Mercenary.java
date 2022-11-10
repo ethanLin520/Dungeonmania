@@ -7,9 +7,11 @@ import dungeonmania.entities.Interactable;
 import dungeonmania.entities.Player;
 import dungeonmania.entities.buildables.Sceptre;
 import dungeonmania.entities.collectables.Treasure;
+import dungeonmania.entities.strategy.json.AlliedJson;
 import dungeonmania.entities.strategy.move.AlliedMove;
 import dungeonmania.entities.strategy.move.DijkstraMove;
 import dungeonmania.entities.strategy.overlap.DefaultOverlap;
+import dungeonmania.entities.strategy.overlap.EnemyOverlap;
 import dungeonmania.util.Position;
 
 public class Mercenary extends Enemy implements Interactable {
@@ -29,10 +31,23 @@ public class Mercenary extends Enemy implements Interactable {
         this.bribeAmount = bribeAmount;
         this.bribeRadius = bribeRadius;
         setMoveStrategy(new DijkstraMove(this));
+        setJsonStrategy(new AlliedJson(this));
     }
 
     public boolean isAllied() {
         return allied;
+    }
+
+    public void setAllied(boolean allied) {
+        this.allied = allied;
+    }
+
+    public int getMindControlStop() {
+        return mindControlStop;
+    }
+
+    public void setMindControlStop(int mindControlStop) {
+        this.mindControlStop = mindControlStop;
     }
 
     /**
@@ -59,6 +74,7 @@ public class Mercenary extends Enemy implements Interactable {
         if (game.getTick() == mindControlStop) {
             allied = false;
             setMoveStrategy(new DijkstraMove(this));
+            setOverlapStrategy(new EnemyOverlap(this));
         }
 
         if (getMoveStrategy() instanceof DijkstraMove) {

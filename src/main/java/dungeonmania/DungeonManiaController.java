@@ -134,11 +134,7 @@ public class DungeonManiaController {
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
         String saveName = NameConverter.getDungeonName(name);
 
-        JSONObject gameJson = GameSaver.loadSaveDungeon(saveName);
-        GameSaver saver = new GameSaver(gameJson);
-        Game loadGame = saver.loadGame(saveName);
-        setGame(loadGame);
-
+        setGame(GameSaver.loadGame(saveName));
         return ResponseBuilder.getDungeonResponse(game);
     }
 

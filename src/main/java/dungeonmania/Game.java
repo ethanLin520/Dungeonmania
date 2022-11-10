@@ -187,6 +187,10 @@ public class Game {
         return this.tickCount;
     }
 
+    public void setTick(int tick) {
+        this.tickCount = tick;
+    }
+
     public String getId() {
         return id;
     }

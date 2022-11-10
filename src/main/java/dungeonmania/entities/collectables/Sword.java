@@ -3,6 +3,7 @@ package dungeonmania.entities.collectables;
 import dungeonmania.Game;
 import dungeonmania.battles.BattleStatistics;
 import dungeonmania.entities.BattleItem;
+import dungeonmania.entities.strategy.json.BattleJson;
 import dungeonmania.util.Position;
 
 public class Sword extends Collectable implements BattleItem {
@@ -19,6 +20,7 @@ public class Sword extends Collectable implements BattleItem {
         super(position);
         this.attack = attack;
         this.durability = durability;
+        setJsonStrategy(new BattleJson(this));
     }
 
     @Override

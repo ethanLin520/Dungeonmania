@@ -6,6 +6,7 @@ import dungeonmania.entities.EntityFactory;
 import dungeonmania.entities.buildables.parts.Parts;
 import dungeonmania.entities.inventory.Inventory;
 import dungeonmania.entities.inventory.InventoryItem;
+import dungeonmania.entities.strategy.json.BattleJson;
 import dungeonmania.util.Position;
 
 public abstract class Buildable extends Entity implements InventoryItem, BattleItem {
@@ -14,6 +15,7 @@ public abstract class Buildable extends Entity implements InventoryItem, BattleI
     public Buildable(Position position) {
         super(position);
         logParts();
+        setJsonStrategy(new BattleJson(this));
     }
 
     @Override
