@@ -191,7 +191,7 @@ public class EntityFactory {
         case "sun_stone":
             return new SunStone(pos);
         case "swamp_tile":
-            return new Swamp(pos, jsonEntity.getInt("movement_factor"));
+            return new SwampTile(pos, jsonEntity.getInt("movement_factor"));
 
         default:
             return null;
