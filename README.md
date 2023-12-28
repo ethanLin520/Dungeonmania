@@ -7,7 +7,6 @@ This specification is broken into four parts:
     <li><a href="#part-i-introduction">Introduction</li>
     <li><a href="#part-ii-product-specification">Product Specification</a></li>
     <li><a href="#part-iii-technical-specification">Technical Specification</a></li>
-    <li><a href="#part-iv-assessment">Assessment</a></li>
 </ol>
 
 ### Table of Contents
