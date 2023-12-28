@@ -11,8 +11,6 @@ This specification is broken into four parts:
 
 ### Table of Contents
 
-[[_TOC_]]
-
 # Part I) Introduction
 
 ## 0. Changelog
